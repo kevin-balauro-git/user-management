@@ -1,0 +1,22 @@
+<header class="p-2 bg-dark text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-6 my-auto">
+        <h1>User Management</h1>
+      </div>
+
+      <div class="col-1 offset-sm-4 my-auto" *ngIf="currentUser === null">
+        <button class="btn btn-primary" type="button" (click)="login()">
+          Log In
+        </button>
+      </div>
+
+      <div class="col-1 offset-sm-4 my-auto" *ngIf="currentUser">
+        <h4 class="text-white">{{ currentUser.userName }}</h4>
+        <button class="btn btn-danger" type="button" (click)="logout()">
+          LogOut
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,247 @@
+<div class="container-fluid mt-4 mb-5">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onCreateUser(form.value)"
+    class="col-8 offset-2 border border-dark-subtle rounded px-5 py-3 shadow-lg"
+  >
+    <div class="row text-center text-bg-dark mb-3">
+      <h1 class="">Create User</h1>
+    </div>
+    <div class="row text-center p-1 alert alert-danger" *ngIf="errorCode">
+      <span>{{ errorCode }}</span>
+    </div>
+    <hr />
+    <div class="row mb-3" formGroupName="name">
+      <div class="col-6 form-group">
+        <label class="form-label" for="">First Name</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="First Name:"
+          formControlName="firstName"
+        />
+        <div
+          *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="firstName?.hasError('required')">
+            First name is required.
+          </div>
+          <div *ngIf="firstName?.hasError('minlength')">
+            First name must be longer.
+          </div>
+          <div *ngIf="password?.hasError('pattern')">Only alphabets</div>
+        </div>
+      </div>
+      <div class="col-6 form-group">
+        <label class="form-label" for="">Last Name</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Last name:"
+          formControlName="lastName"
+        />
+        <div
+          *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="lastName?.hasError('required')">
+            Last name is required.
+          </div>
+          <div *ngIf="lastName?.hasError('minlength')">
+            Last name must be longer.
+          </div>
+          <div *ngIf="lastName?.hasError('pattern')">Only alphabets</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6 form-group">
+        <label class="form-label" for="">Username</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Enter username:"
+          formControlName="username"
+        />
+        <div
+          *ngIf="username?.invalid && (username?.dirty || username?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="username?.hasError('required')">
+            Username is required.
+          </div>
+          <div *ngIf="username?.hasError('minlength')">
+            Username must be longer.
+          </div>
+        </div>
+      </div>
+      <div class="col-6 form-group">
+        <label class="form-label" for="">Email</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Enter email:"
+          formControlName="email"
+        />
+        <div
+          *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="email?.hasError('required')">Email is required.</div>
+          <div *ngIf="email?.hasError('email')">
+            Email must be like example&#64;email.com
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3" formGroupName="passGroup">
+      <div class="col-6 form-group">
+        <label class="form-label" for="">Password</label>
+        <input
+          class="form-control"
+          [type]="hasShowPassword() ? 'text' : 'password'"
+          placeholder="Enter password:"
+          formControlName="password"
+        />
+
+        <div
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="password?.hasError('required')">
+            Password is required.
+          </div>
+          <div *ngIf="password?.hasError('minlength')">
+            Password must be 8 letters long.
+          </div>
+          <div *ngIf="password?.hasError('weak')" class="fs-6">
+            <ul>
+              <li>Password must have 1 capital letter</li>
+              <li>Password must have 1 digit or number</li>
+              <li>Password must have 1 special character</li>
+            </ul>
+          </div>
+          <div *ngIf="password?.hasError('hasSpace')">
+            Password should have no space
+          </div>
+        </div>
+      </div>
+      <div class="col-6 form-group">
+        <label class="form-label" for="">Confirm Password</label>
+        <input
+          class="form-control"
+          [type]="hasShowPassword() ? 'text' : 'password'"
+          placeholder="Re-type password:"
+          formControlName="confirmPassword"
+        />
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [checked]="hasShowPassword()"
+            (click)="show()"
+          />
+          <label class="form-check-label"> Show Password</label>
+        </div>
+        <div
+          *ngIf="
+            confirmPassword?.invalid &&
+            (confirmPassword?.dirty || confirmPassword?.touched)
+          "
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="confirmPassword?.hasError('required')">
+            Confirm Password is required.
+          </div>
+          <div *ngIf="confirmPassword?.hasError('notSame')">
+            Confirm Password not same to Password
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col form-group">
+        <label for="">Phone</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Enter Phone number:"
+        />
+      </div>
+    </div>
+    <div class="row mb-3" formArrayName="address">
+      <h3 class="text-center text-bg-dark">Address</h3>
+
+      <div class="row mb-3 mx-auto">
+        <div class="col-6 form-group">
+          <label for="">Street Name</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Enter street name:"
+            formControlName="streetName"
+          />
+        </div>
+        <div class="col-6 form-group">
+          <label for="">Street Number</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Enter street number:"
+            formControlName="streetNumber"
+          />
+        </div>
+      </div>
+      <div class="row mb-3 mx-auto">
+        <div class="col-6 form-group">
+          <label for="">City</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Enter city:"
+            formControlName="city"
+          />
+        </div>
+        <div class="col-6 form-group">
+          <label for="">Zipcode</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Enter zipcode:"
+            formControlName="zipCode"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row mx-auto map-container mb-3">
+      <div id="map"></div>
+    </div>
+    <div class="row mb-3">
+      <button
+        class="btn col-3 offset-1 btn-success"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Create
+      </button>
+      <button
+        class="btn col-3 btn-primary mx-1"
+        type="button"
+        (click)="populateData()"
+      >
+        Add user
+      </button>
+      <button class="btn col-3 btn-danger" type="button" (click)="back()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

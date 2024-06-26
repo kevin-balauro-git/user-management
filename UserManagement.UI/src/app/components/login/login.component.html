@@ -1,0 +1,75 @@
+<div class="container-fluid mt-4">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="login(form.value)"
+    class="col-8 offset-2 border border-dark-subtle rounded px-5 py-3 shadow-lg"
+  >
+    <div class="row text-center text-bg-dark mb-3">
+      <h1 class="">Sign-In</h1>
+    </div>
+    <div class="row text-center p-1 alert alert-danger" *ngIf="errorStatus">
+      <p>{{ errorStatus.error }}</p>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col form-group">
+        <label class="form-label">Email:</label>
+        <input
+          class="form-control"
+          type="text"
+          placeholder="Enter email:"
+          formControlName="email"
+        />
+        <div
+          *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="email?.hasError('required')">Email is required.</div>
+          <div *ngIf="email?.hasError('email')">
+            Email format must be "juandelacruz&#64;email.com"
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col form-group">
+        <label class="form-label">Password:</label>
+        <input
+          class="form-control"
+          type="password"
+          placeholder="Enter password:"
+          formControlName="password"
+        />
+        <div
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+          class="alert alert-danger"
+          role="alert"
+        >
+          <div *ngIf="password?.hasError('required')">
+            Password is required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <button
+        class="btn btn-success mb-2"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Sign-In
+      </button>
+      <button class="btn btn-primary mb-2" type="button" (click)="employee()">
+        Log-In As Employee
+      </button>
+      <button class="btn btn-info mb-2" type="button" (click)="admin()">
+        Log-In As Admin
+      </button>
+      <button class="btn btn-danger mb-2" type="button" (click)="back()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,82 @@
+<div
+  class="container mt-4 table-responsive"
+  *ngIf="getUserListObs() | async as userList"
+>
+  <table class="table table-striped table-hover caption-top">
+    <caption>
+      List of User
+    </caption>
+    <thead class="table-dark align-middle">
+      <tr>
+        <th class="fs-4" scope="col">ID</th>
+        <th class="fs-4" scope="col">Name</th>
+        <th class="fs-4" scope="col">Username</th>
+        <th class="fs-4" scope="col">Email</th>
+        <th class="fs-4" scope="col">Phone</th>
+        <th class="fs-4" scope="col">Address</th>
+        <th class="fs-4" scope="col" *ngIf="hasLogin()"></th>
+        <th class="fs-4" scope="col" *ngIf="hasLogin()">
+          <button
+            class="btn btn-success"
+            *ngIf="isAdmin()"
+            (click)="onCreateUser()"
+          >
+            <img
+              src="../../../assets/img/add-user.png"
+              style="height: 24px"
+            />Create
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="table-group-divider align-middle"
+      *ngIf="userList.length > 0; else noUser"
+    >
+      <tr *ngFor="let user of userList">
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.name.firstName }} {{ user.name.lastName }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>
+          {{ user.address.streetNumber }} {{ user.address.streetName }}
+          {{ user.address.city }} {{ user.address.zipCode }}
+        </td>
+
+        <td *ngIf="hasLogin()">
+          <button
+            *ngIf="hasLogin()"
+            class="btn btn-info"
+            type="button"
+            (click)="showDetails(user.id)"
+          >
+            <img src="../../../assets/img/search.png" style="height: 24px" />
+            Details
+          </button>
+        </td>
+        <td *ngIf="hasLogin()">
+          <button
+            class="btn btn-danger"
+            type="button"
+            (click)="onDeleteUser(user.id)"
+            *ngIf="isAdmin()"
+          >
+            <img
+              src="../../../assets/img/delete.png"
+              style="height: 25px"
+            />Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noUser>
+    <div class="fs-4">No Users</div>
+  </ng-template>
+</div>
+<div class="container mt-4">
+  <div class="text-center alert alert-danger fs-4" *ngIf="deleted" role="alert">
+    <span>User has been deleted</span>
+  </div>
+</div>

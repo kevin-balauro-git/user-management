@@ -1,0 +1,205 @@
+<div class="container-x1 mx-4 mt-3" [formGroup]="form">
+  <form [formGroup]="form">
+    <div class="row mb-4">
+      <div class="col-4 col-xl-4 offset-1">
+        <div class="row align-items-center mb-2" *ngIf="form">
+          <div class="card px-0">
+            <div class="card-header text-center text-bg-dark">
+              <h2>Profile</h2>
+            </div>
+            <div class="card-body text-center">
+              <img
+                class="profile-img img-thumbnail rounded-circle"
+                src="/assets/img/user.png"
+              />
+              <p>
+                Name: {{ firstName?.value }}
+                {{ lastName?.value }}
+              </p>
+              <p>
+                Username:
+                {{ username?.value }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div id="map"></div>
+        </div>
+      </div>
+      <div class="col-7 col-xl-7" *ngIf="form">
+        <div class="card form-container">
+          <div class="card-header text-bg-dark text-center">
+            <h2>User Details</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col form-group">
+                <label class="small">Email</label>
+                <input
+                  class="form-control"
+                  type="email"
+                  placeholder="Enter your email:"
+                  [value]="email?.value"
+                  formControlName="email"
+                />
+                <div
+                  *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  <div *ngIf="email?.hasError('required')">
+                    Email is required.
+                  </div>
+                  <div *ngIf="email?.hasError('email')">
+                    Email format must be "johndoe&#64;email.com".
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <label class="small form-group">Password</label>
+                <input
+                  class="form-control"
+                  [type]="hasShowPassword() ? 'text' : 'password'"
+                  placeholder="Enter your password:"
+                  [value]="password?.value"
+                  formControlName="password"
+                />
+                <div class="form-check" *ngIf="!isDisabled">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [checked]="hasShowPassword()"
+                    (click)="show()"
+                  />
+                  <label class="form-check-label"> Show Password</label>
+                </div>
+                <div
+                  *ngIf="
+                    password?.invalid && (password?.dirty || password?.touched)
+                  "
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                  <div *ngIf="password?.hasError('required')">
+                    Password is required.
+                  </div>
+                  <div *ngIf="password?.hasError('minlength')">
+                    Password must be 8 character long.
+                  </div>
+                  <div *ngIf="password?.hasError('weak')" class="fs-6">
+                    <ul>
+                      <li>Password must have 1 capital letter</li>
+                      <li>Password must have 1 digit or number</li>
+                      <li>Password must have 1 special character</li>
+                    </ul>
+                  </div>
+                  <div *ngIf="password?.hasError('hasSpace')">
+                    Password should have no space
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-6">
+                <label class="small">Phone</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Enter your phone:"
+                  [value]="phone?.value"
+                  formControlName="phone"
+                />
+              </div>
+              <div class="col-6">
+                <label class="small">Is Admin</label>
+                <select class="form-select" formControlName="isAdmin">
+                  <option [value]="admin?.value" [selected]="true">
+                    {{ admin?.value }}
+                  </option>
+                  <option [value]="admin?.value === 'true' ? false : true">
+                    {{ admin?.value === "true" ? false : true }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="form-group" formGroupName="address">
+                <label for="">Address</label>
+                <div class="row">
+                  <div class="col-6">
+                    <label class="small">Street Number</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter street number:"
+                      [value]="streetNumber?.value"
+                      formControlName="streetNumber"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label class="small">Street Name</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter street name:"
+                      [value]="streetName?.value"
+                      formControlName="streetName"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <label class="small">City</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter City:"
+                      [value]="city?.value"
+                      formControlName="city"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label class="small">Zip Code</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter Zipcode:"
+                      [value]="zipCode?.value"
+                      formControlName="zipCode"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div *ngIf="isAdmin" class="d-inline">
+                <button
+                  *ngIf="isDisabled; else update"
+                  class="btn btn-primary mx-1"
+                  type="button"
+                  (click)="edit()"
+                >
+                  Edit
+                </button>
+                <ng-template #update>
+                  <button
+                    class="btn btn-success mx-1"
+                    type="button"
+                    (click)="onUpdateUser(form.value)"
+                  >
+                    Update
+                  </button>
+                </ng-template>
+              </div>
+
+              <button class="btn btn-danger" type="button" (click)="back()">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

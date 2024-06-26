@@ -1,0 +1,16 @@
+.profile-img {
+  height: 10rem;
+}
+
+#map {
+  width: 100%;
+  height: 300px;
+}
+
+form {
+  background-color: rgb(200, 200, 200);
+}
+
+.form-container {
+  background-color: white;
+}
