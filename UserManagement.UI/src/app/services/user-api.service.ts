@@ -11,8 +11,10 @@ export class UserApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}`);
+  public getUsers(searchItem: string = ''): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}`, {
+      params: { searchItem: searchItem },
+    });
   }
 
   public getUser(id: number): Observable<User> {

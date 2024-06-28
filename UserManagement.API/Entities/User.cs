@@ -15,7 +15,10 @@ namespace UserManagement.API.Entities
         public string IsAdmin { get; set; }
         public User()
         {
-            Uuid = Guid.NewGuid();
+            if (Uuid == Guid.Empty)
+            {
+                Uuid = Guid.NewGuid();
+            }
         }
 
     }

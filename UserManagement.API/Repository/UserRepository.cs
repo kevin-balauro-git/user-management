@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.API.Controllers;
 using UserManagement.API.Dto;
@@ -12,15 +13,20 @@ namespace UserManagement.API.Repository
         private readonly ILogger<UsersController> _logger;
         private readonly UserContext _userContext;
         private readonly IMapper _mapper;
-
+        private readonly UserManager<AccessUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public UserRepository(
             ILogger<UsersController> logger,
             UserContext userContext,
+            UserManager<AccessUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             IMapper mapper)
         {
             _logger = logger;
             _userContext = userContext;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<UserDto> GetUserAsync(int id)
@@ -34,14 +40,43 @@ namespace UserManagement.API.Repository
         public async Task<User> CreateUserAsync(UserDto newUserDto)
         {
             User? newUser = _mapper.Map<User>(newUserDto);
+            
+            var newAccessUser = new AccessUser
+            {    
+                Id = newUser.Uuid.ToString(),
+                UserName = newUserDto.Username,
+                Email = newUserDto.Email,
+                IsAdmin = newUserDto.IsAdmin,
+            };
+             
+            await _userManager.CreateAsync(newAccessUser, newUserDto.Password);
+            
+            var adminRoleExist = await _roleManager.RoleExistsAsync("Admin");
+            var employeeRoleExist = await _roleManager.RoleExistsAsync("Employee");
+
+            if (!adminRoleExist && !employeeRoleExist)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new IdentityRole("Employee"));
+            }
+
+            if (bool.Parse(newUserDto.IsAdmin))
+                await _userManager.AddToRoleAsync(newAccessUser, "Admin ");
+            else
+                await _userManager.AddToRoleAsync(newAccessUser, "Employee");
+  
             _userContext.Add(newUser);
             await _userContext.SaveChangesAsync();
+            
+                      
             return newUser;
         }
 
         public async Task<User> UpdateUserAsync(int id,UserDto updatedUserDto)
         {
             var updatedUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var users = await _userManager.Users.ToListAsync();
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Uuid.ToString());
             if (updatedUser != null)
             {
                 updatedUser.Name.FirstName = updatedUserDto.Name.FirstName;
@@ -50,6 +85,7 @@ namespace UserManagement.API.Repository
                 updatedUser.Username = updatedUserDto.Username;
                 updatedUser.Password = updatedUserDto.Password;
                 updatedUser.Phone = updatedUserDto.Phone;
+                updatedUser.IsAdmin = updatedUserDto.IsAdmin;
                 updatedUser.Address.StreetNumber = updatedUserDto.Address.StreetNumber;
                 updatedUser.Address.StreetName = updatedUserDto.Address.StreetName;
                 updatedUser.Address.City = updatedUserDto.Address.City;
@@ -57,9 +93,10 @@ namespace UserManagement.API.Repository
                 updatedUser.Address.GeoLocation.Latitude = updatedUserDto.Address.GeoLocation.Latitude;
                 updatedUser.Address.GeoLocation.Longitude = updatedUserDto.Address.GeoLocation.Longitude;
 
-                _logger.LogInformation("Updated User: {@user}", updatedUser);
+                user.IsAdmin = updatedUser.IsAdmin;
 
                 await _userContext.SaveChangesAsync();
+                await _userManager.UpdateAsync(user);
                 return updatedUser;
             }
             return null;
@@ -69,13 +106,12 @@ namespace UserManagement.API.Repository
         {
             _logger.LogInformation("User Id: {@id}", id);
             var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var accessUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == user.Uuid.ToString());
             if (user != null)
             {
-                _logger.LogInformation("User Deleted: {@user}", user);
-
                 _userContext.Users.Remove(user);
                 await _userContext.SaveChangesAsync();
-
+                await _userManager.DeleteAsync(accessUser);
                 return user;
             }
             return null;

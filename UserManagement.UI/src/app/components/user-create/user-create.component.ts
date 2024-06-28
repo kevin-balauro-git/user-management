@@ -24,7 +24,7 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
   private marker!: any;
   private showPassword: boolean = false;
 
-  private createUserForm: FormGroup = this.formBuilder.nonNullable.group({
+  private createUserForm: FormGroup = this.formBuilder.group({
     name: this.formBuilder.nonNullable.group({
       firstName: [
         '',
@@ -147,8 +147,8 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
     this.userApiService.createUser(newUser).subscribe({
       error: (error) => {
         window.scrollTo(0, 0);
-        console.log(error.message);
-        this.errorCode = error.error.message;
+        console.log(error);
+        this.errorCode = error.error;
       },
       complete: () => {
         this.router.navigateByUrl('/users');

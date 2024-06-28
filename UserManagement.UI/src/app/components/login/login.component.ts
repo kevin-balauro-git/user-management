@@ -72,7 +72,7 @@ export class LoginComponent {
       },
       error: (error) => {
         this.errorStatus = error;
-        console.error(error.error.errors);
+        console.error(error);
       },
     });
   }

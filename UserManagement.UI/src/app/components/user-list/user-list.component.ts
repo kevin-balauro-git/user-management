@@ -5,28 +5,36 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [NgFor, NgIf, AsyncPipe],
+  imports: [NgFor, NgIf, AsyncPipe, ReactiveFormsModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })
 export class UserListComponent implements OnInit {
   private hasDeleted: boolean = false;
-
+  public form: FormGroup = this.formbuilder.group({
+    searchItem: [''],
+  });
   private userList$: Observable<User[]> | undefined;
+
+  constructor(
+    private userApiService: UserApiService,
+    private router: Router,
+    private authService: AuthService,
+    private formbuilder: FormBuilder
+  ) {}
 
   get deleted(): boolean {
     return this.hasDeleted;
   }
 
-  constructor(
-    private userApiService: UserApiService,
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  get searchItem() {
+    return this.form.controls['searchItem'];
+  }
 
   public getUserListObs(): Observable<User[]> | undefined {
     return this.userList$;
@@ -65,5 +73,9 @@ export class UserListComponent implements OnInit {
         this.userList$ = this.userApiService.getUsers();
       }, 700);
     }
+  }
+
+  public search(item: any): void {
+    this.userList$ = this.userApiService.getUsers(item.searchItem);
   }
 }

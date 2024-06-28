@@ -134,3 +134,4 @@ D:\Prototypes\UserManagementApp\UserManagement.API\bin\Debug\net8.0\System.Web.W
 D:\Prototypes\UserManagementApp\UserManagement.API\bin\Debug\net8.0\System.Web.WebPages.Razor.dll
 D:\Prototypes\UserManagementApp\UserManagement.API\bin\Debug\net8.0\System.Web.WebPages.dll
 D:\Prototypes\UserManagementApp\UserManagement.API\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
+D:\Prototypes\UserManagementApp\UserManagement.API\obj\Debug\net8.0\UserManagement.API.sourcelink.json

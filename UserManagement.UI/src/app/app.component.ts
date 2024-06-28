@@ -23,7 +23,5 @@ export class AppComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  ngOnInit(): void {
-    this.authService.currentUser.subscribe((u) => console.log('user', u));
-  }
+  ngOnInit(): void {}
 }
