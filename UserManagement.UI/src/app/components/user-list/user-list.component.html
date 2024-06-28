@@ -1,6 +1,6 @@
 <div
   class="container mt-4 table-responsive"
-  *ngIf="getUserListObs() | async as userList"
+  *ngIf="getUserListObs() | async as userList; else noList"
 >
   <table class="table table-striped table-hover caption-top">
     <caption class="container-fluid">
@@ -97,3 +97,6 @@
     <span>User has been deleted</span>
   </div>
 </div>
+<ng-template #noList>
+  <h1 class="text-center alert alert-danger mt-3">No List</h1>
+</ng-template>

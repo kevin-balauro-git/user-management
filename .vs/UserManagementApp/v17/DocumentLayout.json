@@ -42,8 +42,7 @@
               "RelativeToolTip": "UserManagement.API\\Services\\JwtService.cs",
               "ViewState": "AQIAABEAAABgmZmZmZktwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T03:54:02.218Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-28T03:54:02.218Z"
             },
             {
               "$type": "Document",
@@ -55,8 +54,7 @@
               "RelativeToolTip": "UserManagement.API\\Entities\\User.cs",
               "ViewState": "AQIAAAcAAADAmZmZmZkcwBQAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T02:09:21.711Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-28T02:09:21.711Z"
             },
             {
               "$type": "Document",
@@ -68,8 +66,7 @@
               "RelativeToolTip": "UserManagement.API\\Data\\SeedData.cs",
               "ViewState": "AQIAAFEAAAAAZGZmZiYmwCsAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T01:36:02.63Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-28T01:36:02.63Z"
             },
             {
               "$type": "Document",
@@ -81,8 +78,7 @@
               "RelativeToolTip": "UserManagement.API\\Repository\\UserRepository.cs",
               "ViewState": "AQIAABwAAADANTMzM/MnwDIAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T00:46:50.284Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-28T00:46:50.284Z"
             },
             {
               "$type": "Document",
@@ -92,7 +88,7 @@
               "RelativeDocumentMoniker": "UserManagement.API\\Controllers\\UsersController.cs",
               "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Controllers\\UsersController.cs",
               "RelativeToolTip": "UserManagement.API\\Controllers\\UsersController.cs",
-              "ViewState": "AQIAACoAAADozMzMzKw0wC4AAAAMAAAA",
+              "ViewState": "AQIAADEAAACA/////z8wwDUAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-28T00:04:28.264Z",
               "EditorCaption": ""

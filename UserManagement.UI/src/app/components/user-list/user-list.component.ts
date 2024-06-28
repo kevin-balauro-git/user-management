@@ -53,6 +53,11 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
     this.userList$ = this.userApiService.getUsers();
+    this.userApiService.getUsers().subscribe({
+      error: (err) => {
+        this.authService.logout();
+      },
+    });
   }
 
   public showDetails(id: number): void {
