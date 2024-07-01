@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './user-create.component.html',
   styleUrl: './user-create.component.css',
 })
-export class UserCreateComponent implements AfterViewInit, OnInit {
+export class UserCreateComponent implements AfterViewInit {
   private map: any;
   private marker!: any;
   private showPassword: boolean = false;
@@ -74,7 +74,7 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
     }),
   });
 
-  public errorCode!: any;
+  public errorCode: any;
 
   constructor(
     private location: Location,
@@ -82,6 +82,10 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
     private router: Router,
     private userApiService: UserApiService
   ) {}
+
+  public ngAfterViewInit(): void {
+    this.initMap();
+  }
 
   get form() {
     return this.createUserForm;
@@ -108,52 +112,6 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
   }
   get password() {
     return this.createUserForm.controls['passGroup'].get('password');
-  }
-
-  public hasShowPassword(): boolean {
-    return this.showPassword;
-  }
-
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
-  public onCreateUser(formData: any): void {
-    const newUser = {
-      id: 0,
-      name: {
-        firstName: formData.name.firstName,
-        lastName: formData.name.lastName,
-      },
-      username: formData.username,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.passGroup.password,
-      address: {
-        city: formData.address.city,
-        streetName: formData.address.streetName,
-        streetNumber: formData.address.streetNumber,
-        zipCode: formData.address.zipCode,
-        geoLocation: {
-          latitude: formData.address.geoLocation.latitude.toString(),
-          longitude: formData.address.geoLocation.longitude.toString(),
-        },
-      },
-      isAdmin: 'false',
-    };
-
-    this.userApiService.createUser(newUser).subscribe({
-      error: (error) => {
-        window.scrollTo(0, 0);
-        console.log(error);
-        this.errorCode = error.error;
-      },
-      complete: () => {
-        this.router.navigateByUrl('/users');
-      },
-    });
   }
 
   private initMap(): void {
@@ -194,6 +152,45 @@ export class UserCreateComponent implements AfterViewInit, OnInit {
     });
 
     tiles.addTo(this.map);
+  }
+
+  public hasShowPassword(): boolean {
+    return this.showPassword;
+  }
+
+  public onCreateUser(formData: any): void {
+    const newUser = {
+      id: 0,
+      name: {
+        firstName: formData.name.firstName,
+        lastName: formData.name.lastName,
+      },
+      username: formData.username,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.passGroup.password,
+      address: {
+        city: formData.address.city,
+        streetName: formData.address.streetName,
+        streetNumber: formData.address.streetNumber,
+        zipCode: formData.address.zipCode,
+        geoLocation: {
+          latitude: formData.address.geoLocation.latitude.toString(),
+          longitude: formData.address.geoLocation.longitude.toString(),
+        },
+      },
+      isAdmin: 'false',
+    };
+
+    this.userApiService.createUser(newUser).subscribe({
+      error: (error) => {
+        window.scrollTo(0, 0);
+        this.errorCode = error.error;
+      },
+      complete: () => {
+        this.router.navigateByUrl('/users');
+      },
+    });
   }
 
   public populateData(): void {

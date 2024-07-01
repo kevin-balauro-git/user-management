@@ -7,7 +7,6 @@ export const userGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
 
   if (authService.userValue) {
-    console.log(authService.userValue.isAdmin);
     return true;
   } else {
     router.navigateByUrl('/');

@@ -93,10 +93,10 @@ try
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
-
+        await app.UseSeedDb();
     }
 
-    await app.UseSeedDb();
+    
 
     app.UseHttpsRedirection();
     app.UseCors("CorsPolicy");

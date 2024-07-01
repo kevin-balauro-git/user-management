@@ -20,12 +20,4 @@ export class PasswordValidator {
     });
     return space ? { hasSpace: true } : null;
   }
-
-  //   public static firstLetterNotDigit(
-  //     control: AbstractControl
-  //   ): ValidationErrors | null {
-  //     const firstSubstring = /\d/.test(control.value.toString().substring(0, 1));
-  //     console.log(firstSubstring);
-  //     return { firstLetter: true };
-  //   }
 }

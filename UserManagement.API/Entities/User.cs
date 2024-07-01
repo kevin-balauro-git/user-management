@@ -16,9 +16,7 @@ namespace UserManagement.API.Entities
         public User()
         {
             if (Uuid == Guid.Empty)
-            {
                 Uuid = Guid.NewGuid();
-            }
         }
 
     }

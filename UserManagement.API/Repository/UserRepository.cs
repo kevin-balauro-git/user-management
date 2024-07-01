@@ -29,6 +29,23 @@ namespace UserManagement.API.Repository
             _roleManager = roleManager;
         }
 
+        public async Task<List<UserDto>> GetUsersAsync(string searchItem, string sortOrder)
+        {
+            var users = await _userContext.Users.Where(u =>
+                 u.Name.FirstName.ToLower().Contains(searchItem.ToLower()) ||
+                 u.Name.LastName.ToLower().Contains(searchItem.ToLower()) ||
+                 u.Email.ToLower().Contains(searchItem.ToLower()) ||
+                 u.Username.ToLower().Contains(searchItem.ToLower()) ||
+                 u.Phone.ToLower().Contains(searchItem.ToLower())
+            ).ToListAsync();
+
+            
+            var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
+
+            return usersDto;
+        }
+
+
         public async Task<UserDto> GetUserAsync(int id)
         {
            var user =  await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -77,6 +94,7 @@ namespace UserManagement.API.Repository
             var updatedUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             var users = await _userManager.Users.ToListAsync();
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Uuid.ToString());
+            
             if (updatedUser != null)
             {
                 updatedUser.Name.FirstName = updatedUserDto.Name.FirstName;

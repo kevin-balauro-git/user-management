@@ -3,24 +3,8 @@
   "WorkspaceRootPath": "D:\\Prototypes\\UserManagementApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,67 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "JwtService.cs",
-              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Services\\JwtService.cs",
-              "RelativeDocumentMoniker": "UserManagement.API\\Services\\JwtService.cs",
-              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Services\\JwtService.cs",
-              "RelativeToolTip": "UserManagement.API\\Services\\JwtService.cs",
-              "ViewState": "AQIAABEAAABgmZmZmZktwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T03:54:02.218Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Entities\\User.cs",
-              "RelativeDocumentMoniker": "UserManagement.API\\Entities\\User.cs",
-              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Entities\\User.cs",
-              "RelativeToolTip": "UserManagement.API\\Entities\\User.cs",
-              "ViewState": "AQIAAAcAAADAmZmZmZkcwBQAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T02:09:21.711Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SeedData.cs",
-              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Data\\SeedData.cs",
-              "RelativeDocumentMoniker": "UserManagement.API\\Data\\SeedData.cs",
-              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Data\\SeedData.cs",
-              "RelativeToolTip": "UserManagement.API\\Data\\SeedData.cs",
-              "ViewState": "AQIAAFEAAAAAZGZmZiYmwCsAAAAmAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T01:36:02.63Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Repository\\UserRepository.cs",
-              "RelativeDocumentMoniker": "UserManagement.API\\Repository\\UserRepository.cs",
-              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Repository\\UserRepository.cs",
-              "RelativeToolTip": "UserManagement.API\\Repository\\UserRepository.cs",
-              "ViewState": "AQIAABwAAADANTMzM/MnwDIAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T00:46:50.284Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "UserManagement.API\\Controllers\\UsersController.cs",
-              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "UserManagement.API\\Controllers\\UsersController.cs",
-              "ViewState": "AQIAADEAAACA/////z8wwDUAAAAYAAAA",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Program.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Program.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Program.cs",
+              "RelativeToolTip": "UserManagement.API\\Program.cs",
+              "ViewState": "AQIAAEgAAAAA+////38ZwF8AAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-28T00:04:28.264Z",
+              "WhenOpened": "2024-07-01T01:34:42.948Z",
               "EditorCaption": ""
             }
           ]

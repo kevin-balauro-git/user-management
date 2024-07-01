@@ -80,7 +80,6 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   get admin() {
-    console.log(typeof this.updateForm.get('isAdmin')?.value);
     return this.updateForm.get('isAdmin');
   }
 
@@ -239,11 +238,9 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   public onUpdateUser(data: any) {
-    console.log(data);
     this.userApiService.updateUser(this.userId, data).subscribe({
       error: (error) => {
         this.errorStatus = error;
-        console.log(error);
       },
       complete: () => this.router.navigateByUrl('/users'),
     });

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserApiService } from '../../services/user-api.service';
 import { User } from '../../models/user.interface';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,12 +14,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
   private hasDeleted: boolean = false;
-  public form: FormGroup = this.formbuilder.group({
-    searchItem: [''],
-  });
+  private form: FormGroup = this.formbuilder.group({ searchItem: [''] });
   private userList$: Observable<User[]> | undefined;
+  private users: User[] | undefined;
+  private usersSub$: Subscription | undefined;
 
   constructor(
     private userApiService: UserApiService,
@@ -28,6 +28,9 @@ export class UserListComponent implements OnInit {
     private formbuilder: FormBuilder
   ) {}
 
+  get searchForm() {
+    return this.form;
+  }
   get deleted(): boolean {
     return this.hasDeleted;
   }
@@ -36,14 +39,18 @@ export class UserListComponent implements OnInit {
     return this.form.controls['searchItem'];
   }
 
+  get usersList() {
+    return this.users;
+  }
+
   public getUserListObs(): Observable<User[]> | undefined {
     return this.userList$;
   }
 
   public isAdmin(): boolean {
-    if (this.authService.userValue?.isAdmin.toLowerCase() === 'true') {
+    if (this.authService.userValue?.isAdmin.toLowerCase() === 'true')
       return true;
-    } else return false;
+    else return false;
   }
 
   public hasLogin(): boolean {
@@ -52,12 +59,16 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userList$ = this.userApiService.getUsers();
-    this.userApiService.getUsers().subscribe({
+    this.usersSub$ = this.userApiService.getUsers().subscribe({
+      next: (data) => (this.users = data),
       error: (err) => {
         this.authService.logout();
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.usersSub$?.unsubscribe();
   }
 
   public showDetails(id: number): void {
@@ -81,6 +92,11 @@ export class UserListComponent implements OnInit {
   }
 
   public search(item: any): void {
-    this.userList$ = this.userApiService.getUsers(item.searchItem);
+    this.usersSub$ = this.userApiService.getUsers(item.searchItem).subscribe({
+      next: (data) => (this.users = data),
+      error: (err) => {
+        this.authService.logout();
+      },
+    });
   }
 }

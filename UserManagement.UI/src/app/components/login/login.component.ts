@@ -25,7 +25,16 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+
+  private showPassword: boolean = false;
+
   public errorStatus: any | undefined;
+
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {}
 
   public get form() {
     return this.loginForm;
@@ -38,11 +47,6 @@ export class LoginComponent {
   public get password() {
     return this.loginForm.controls['password'];
   }
-  constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) {}
 
   public employee(): void {
     this.email.setValue('fdagojoy@email.com');
@@ -72,12 +76,19 @@ export class LoginComponent {
       },
       error: (error) => {
         this.errorStatus = error;
-        console.error(error);
       },
     });
   }
 
+  public hasShowPassword(): boolean {
+    return this.showPassword;
+  }
+
   public back(): void {
     this.router.navigateByUrl('/');
+  }
+
+  public show(): void {
+    this.showPassword = !this.showPassword;
   }
 }

@@ -40,34 +40,11 @@ namespace UserManagement.API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery] string searchItem = "", [FromBody] string sortOrder="desc")
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery] string searchItem = "", [FromQuery] string sortOrder="desc")
         {
-            if (!User.Identity.IsAuthenticated)
-                return Unauthorized("You're not authenticated");
+            var usersDto = await _userRepository.GetUsersAsync(searchItem, sortOrder);
             
-
-            var users = await _userContext.Users.Where(u =>
-                 u.Name.FirstName.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Name.LastName.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Email.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Username.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Phone.ToLower().Contains(searchItem.ToLower())
-            ).ToListAsync();
-
-            await _userContext.Users.ToListAsync(); 
-            switch(sortOrder)
-            {
-                case "desc":
-                     users.OrderByDescending(u => u.Id);
-                    break;
-                default:
-                    users.OrderBy(u => u.Id);
-                    break;
-            }
-
-            var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
-   
-            return Ok(usersDto);
+            return Ok(usersDto);     
         }
 
         [HttpGet]
@@ -87,7 +64,7 @@ namespace UserManagement.API.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<ActionResult> CreateUser([FromBody] UserDto newUserDto)
         {
-            _logger.LogInformation("Authenticated: {@auth}", User.Identity.IsAuthenticated);
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -108,20 +85,14 @@ namespace UserManagement.API.Controllers
         public async Task<ActionResult> UpdateUser([FromRoute] int id, [FromBody] UserDto updateUserDto)
         {
             if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-            
-            _logger.LogInformation("Authenticated: {@auth}", User.Identity.IsAuthenticated);
+                return BadRequest(ModelState); 
             if (await _userRepository.checkEmail(updateUserDto) && await _userRepository.checkId(updateUserDto))
-                return Conflict($"An existing record with an email '{updateUserDto.Email}' was already found.");
-            
+                return Conflict($"An existing record with an email '{updateUserDto.Email}' was already found.");  
             if (await _userRepository.checkUsername(updateUserDto) && await _userRepository.checkId(updateUserDto))
-            return Conflict($"An existing record with a username '{updateUserDto.Username}' was already found.");
-            
-            var updateUser = await _userRepository.UpdateUserAsync(id, updateUserDto);
-            
+                return Conflict($"An existing record with a username '{updateUserDto.Username}' was already found.");
+            var updateUser = await _userRepository.UpdateUserAsync(id, updateUserDto);            
             if(updateUser == null)
                 return NotFound();
-            
             return NoContent();
         }
 

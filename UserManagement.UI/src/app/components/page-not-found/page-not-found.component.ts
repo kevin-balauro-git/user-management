@@ -12,6 +12,6 @@ export class PageNotFoundComponent {
   constructor(private router: Router) {}
 
   public back(): void {
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/users');
   }
 }
