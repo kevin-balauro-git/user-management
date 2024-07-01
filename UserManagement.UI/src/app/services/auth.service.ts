@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { AuthUser } from '../models/auth-user.interface';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl: string = 'https://localhost:7169/api/account';
+  private readonly baseUrl: string = environment.authApi;
 
   private currentUserSubject: BehaviorSubject<AuthUser | null>;
   public currentUser: Observable<AuthUser | null>;
