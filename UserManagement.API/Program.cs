@@ -41,7 +41,8 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDbContext<UserContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PgsqlConnection")));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PgsqlConnection"))
+    );
 
     builder.Services.AddIdentity<AccessUser, IdentityRole>(options =>
         {
@@ -93,10 +94,10 @@ try
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
-        await app.UseSeedDb();
     }
 
-    
+    app.ApplyMigrations();
+    await app.UseSeedDb();
 
     app.UseHttpsRedirection();
     app.UseCors("CorsPolicy");

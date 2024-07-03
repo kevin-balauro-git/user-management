@@ -12,8 +12,8 @@ using UserManagement.API.Entities;
 namespace UserManagement.API.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20240619080404_InitialDb")]
-    partial class InitialDb
+    [Migration("20240701070945_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

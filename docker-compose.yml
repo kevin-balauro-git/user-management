@@ -1,0 +1,24 @@
+version: "3.4"
+
+services:
+  usermanagement.api:
+    image: ${DOCKER_REGISTRY-}usermanagement.api
+    container_name: usermanagement.api
+    build:
+      context: .
+      dockerfile: UserManagement.API/Dockerfile
+    ports:
+      - "5099:5000"
+      - "7169:5001"
+
+  usermanagement.database:
+    image: postgres:latest
+    container_name: usermanagement.database
+    environment:
+      - POSTGRES_DB=user-management
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/products-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

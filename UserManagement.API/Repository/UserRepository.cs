@@ -42,7 +42,7 @@ namespace UserManagement.API.Repository
             
             var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
 
-            return usersDto;
+            return usersDto.OrderBy(u => u.Id).ToList();
         }
 
 
@@ -122,9 +122,10 @@ namespace UserManagement.API.Repository
 
         public async Task<User> DeleteUserAsync(int id)
         {
-            _logger.LogInformation("User Id: {@id}", id);
+            
             var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             var accessUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == user.Uuid.ToString());
+            
             if (user != null)
             {
                 _userContext.Users.Remove(user);

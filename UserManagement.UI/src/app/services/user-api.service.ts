@@ -35,6 +35,7 @@ export class UserApiService {
   }
 
   public deleteUser(id: number): Observable<User> {
+    console.log(id);
     return this.http.delete<User>(`${this.baseUrl}/${id.toString()}`);
   }
 }

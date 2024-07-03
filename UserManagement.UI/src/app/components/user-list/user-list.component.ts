@@ -86,7 +86,13 @@ export class UserListComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         this.hasDeleted = false;
-        this.userList$ = this.userApiService.getUsers();
+
+        this.usersSub$ = this.userApiService.getUsers().subscribe({
+          next: (data) => (this.users = data),
+          error: (err) => {
+            this.authService.logout();
+          },
+        });
       }, 700);
     }
   }

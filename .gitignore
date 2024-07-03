@@ -1,0 +1,7 @@
+.containers
+.vs/
+bin/
+obj/
+
+UserManagement.API/bin/
+UserManagement.API/obj/

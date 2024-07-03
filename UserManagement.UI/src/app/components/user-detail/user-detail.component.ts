@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserApiService } from '../../services/user-api.service';
 import { User } from '../../models/user.interface';
 import { AsyncPipe, Location, NgIf } from '@angular/common';
-import 'leaflet/dist/images/marker-shadow.png';
 import * as L from 'leaflet';
 import {
   FormBuilder,
@@ -238,12 +237,16 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   }
 
   public onUpdateUser(data: any) {
-    this.userApiService.updateUser(this.userId, data).subscribe({
-      error: (error) => {
-        this.errorStatus = error;
-      },
-      complete: () => this.router.navigateByUrl('/users'),
-    });
+    if (confirm('Are you sure to update this user?')) {
+      setTimeout(() => {
+        this.userApiService.updateUser(this.userId, data).subscribe({
+          error: (error) => {
+            this.errorStatus = error;
+          },
+          complete: () => this.router.navigateByUrl('/users'),
+        });
+      }, 700);
+    }
   }
 
   public show(): void {

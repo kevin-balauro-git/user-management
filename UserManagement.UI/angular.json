@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": ["leaflet"],
             "outputPath": "dist/user-management.ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -36,6 +37,7 @@
           },
           "configurations": {
             "production": {
+              "optimization": true,
               "budgets": [
                 {
                   "type": "initial",
