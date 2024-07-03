@@ -1289,3 +1289,4 @@
 {"@t":"2024-07-03T06:00:09.1149881Z","@mt":"Hosting environment: {EnvName}","EnvName":"Development","SourceContext":"Microsoft.Hosting.Lifetime"}
 {"@t":"2024-07-03T06:00:09.1159807Z","@mt":"Content root path: {ContentRoot}","ContentRoot":"D:\\Prototypes\\UserManagementApp\\UserManagement.API","SourceContext":"Microsoft.Hosting.Lifetime"}
 {"@t":"2024-07-03T06:00:27.4483770Z","@mt":"Application is shutting down...","SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2024-07-03T06:23:52.6772502Z","@mt":"The host was aborted.","@l":"Fatal"}
