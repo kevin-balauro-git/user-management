@@ -96,7 +96,7 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseMigration();
+    
     await app.UseSeedDb();
 
     app.UseHttpsRedirection();
