@@ -11,8 +11,9 @@ namespace UserManagement.API.Data
             ArgumentNullException.ThrowIfNull(context, nameof(context));
             
             context.Database.EnsureDeleted();
-            context.Database.Migrate();
             context.Database.EnsureCreated();
+            context.Database.Migrate();
+            
 
             var users = new User[]
                 {
