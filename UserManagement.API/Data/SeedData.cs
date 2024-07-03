@@ -10,7 +10,6 @@ namespace UserManagement.API.Data
         {
             ArgumentNullException.ThrowIfNull(context, nameof(context));
             
-            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             context.Database.Migrate();
             
