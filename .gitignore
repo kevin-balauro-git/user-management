@@ -1,5 +1,5 @@
 .containers
-.vs/
+.vs
 bin/
 obj/
 
