@@ -20,6 +20,23 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/products-db:/var/lib/postgresql/data
+      - ./.sql/user-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  usermanagement.ui:
+    container_name: usermanagement.ui
+    image: usermanagement.ui
+    build:
+      context: .
+      dockerfile: UserManagement.UI/Dockerfile
+    ports:
+      - "4200:80"
+    expose:
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge

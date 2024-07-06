@@ -8,11 +8,8 @@ namespace UserManagement.API.Data
     {
         public static async Task InitializeDb(UserContext context, UserManager<AccessUser> accessManager)
         {
+            
             ArgumentNullException.ThrowIfNull(context, nameof(context));
-            
-            context.Database.EnsureCreated();
-            context.Database.Migrate();
-            
 
             var users = new User[]
                 {
@@ -145,6 +142,7 @@ namespace UserManagement.API.Data
                 };
 
             var accessUsers = new AccessUser[users.Length];
+
             for (int i = 0; i < users.Length; i++)
             {
 
@@ -163,14 +161,12 @@ namespace UserManagement.API.Data
                 await accessManager.CreateAsync(accessUsers[i], users[i].Password);      
             }
 
-
             foreach (User user in users)
             {
-                 context.Users.Add(user);
+                await context.Users.AddAsync(user);
             }
             
-            await context.SaveChangesAsync();
-            
+            await context.SaveChangesAsync();           
         }
     }
 }

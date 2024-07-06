@@ -11,7 +11,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["UserManagement.API/UserManagement.API.csproj", "UserManagement.API/"]
 RUN dotnet restore "./UserManagement.API/UserManagement.API.csproj"
-RUN dotnet ef database update
 COPY . .
 WORKDIR "/src/UserManagement.API"
 RUN dotnet build "./UserManagement.API.csproj" -c $BUILD_CONFIGURATION -o /app/build

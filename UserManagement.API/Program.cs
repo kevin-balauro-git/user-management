@@ -41,7 +41,7 @@ try
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddDbContext<UserContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PgsqlConnection"))
+        options.UseNpgsql(builder.Configuration.GetConnectionString("Database"))
     );
 
     builder.Services.AddIdentity<AccessUser, IdentityRole>(options =>
@@ -96,7 +96,6 @@ try
         app.UseSwaggerUI();
     }
 
-    
     await app.UseSeedDb();
 
     app.UseHttpsRedirection();

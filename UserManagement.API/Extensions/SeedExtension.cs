@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using UserManagement.API.Data;
 using UserManagement.API.Entities;
 
@@ -11,16 +13,18 @@ namespace UserManagement.API.Extensions
             ArgumentNullException.ThrowIfNull(app, nameof(app));
 
             using var scope = app.ApplicationServices.CreateScope();
-            var services = scope.ServiceProvider;
+          
             try
             {
-                var context = services.GetRequiredService<UserContext>();
-                var i = services.GetRequiredService<UserManager<AccessUser>>();
-               await SeedData.InitializeDb(context,i);
+                var userContext = scope.ServiceProvider.GetRequiredService<UserContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AccessUser>>();
+
+                await userContext.Database.MigrateAsync();
+                await SeedData.InitializeDb(userContext,userManager);
             }
             catch (Exception ex)
             {
-
+                Log.Logger.Error(ex.Message);
             }
             return app;
         }
