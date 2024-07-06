@@ -12,20 +12,16 @@ namespace UserManagement.API.Extensions
         {
             ArgumentNullException.ThrowIfNull(app, nameof(app));
 
-            using var scope = app.ApplicationServices.CreateScope();
-          
-            try
+            using (var scope = app.ApplicationServices.CreateScope())
             {
                 var userContext = scope.ServiceProvider.GetRequiredService<UserContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AccessUser>>();
 
                 await userContext.Database.MigrateAsync();
                 await SeedData.InitializeDb(userContext,userManager);
+            
             }
-            catch (Exception ex)
-            {
-                Log.Logger.Error(ex.Message);
-            }
+            
             return app;
         }
     }

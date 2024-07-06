@@ -1,16 +1,6 @@
 version: "3.4"
 
 services:
-  usermanagement.api:
-    image: ${DOCKER_REGISTRY-}usermanagement.api
-    container_name: usermanagement.api
-    build:
-      context: .
-      dockerfile: UserManagement.API/Dockerfile
-    ports:
-      - "5099:5000"
-      - "7169:5001"
-
   usermanagement.database:
     image: postgres:latest
     container_name: usermanagement.database
@@ -23,6 +13,26 @@ services:
       - ./.sql/user-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  usermanagement.api:
+    image: ${DOCKER_REGISTRY-}usermanagement.api
+    container_name: usermanagement.api
+    build:
+      context: .
+      dockerfile: UserManagement.API/Dockerfile
+    ports:
+      - "5099:5000"
+      - "7169:5001"
+    depends_on:
+      usermanagement.database:
+        condition: service_healthy
+        restart: true
 
   usermanagement.ui:
     container_name: usermanagement.ui
