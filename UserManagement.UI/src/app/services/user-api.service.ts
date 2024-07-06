@@ -24,8 +24,7 @@ export class UserApiService {
 
   public createUser(newUser: User): Observable<User> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const body = newUser;
-    return this.http.post<User>(this.baseUrl, body, {
+    return this.http.post<User>(this.baseUrl, newUser, {
       headers,
     });
   }
