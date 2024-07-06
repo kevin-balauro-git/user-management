@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { PasswordValidator } from '../../shared/validation/password.validator';
 import { AuthService } from '../../services/auth.service';
-
+import 'leaflet/dist/images/marker-shadow.png';
 @Component({
   selector: 'app-user-detail',
   standalone: true,

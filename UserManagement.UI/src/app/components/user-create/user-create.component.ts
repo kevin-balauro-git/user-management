@@ -11,6 +11,7 @@ import { PasswordValidator } from '../../shared/validation/password.validator';
 import { ConfirmPasswordValidator } from '../../shared/validation/confirmPassword.validator';
 import { UserApiService } from '../../services/user-api.service';
 import { Router } from '@angular/router';
+import 'leaflet/dist/images/marker-shadow.png';
 
 @Component({
   selector: 'app-user-create',
