@@ -8,5 +8,14 @@
 # Running the App with Docker Compose
   1. Install `Docker Desktop for Windows`.
   2. Clone the repository.
-    > git clone  
+    ```
+     git clone https://github.com/kevin-balauro-git/user-management.git 
+    ```
   3. Navigate to the `user-management` subfolder in a console window.
+  4. Run the following commands at the root of the folder.
+     ```
+      docker compose build
+     ```
+     ```
+      docker compose run
+     ```
