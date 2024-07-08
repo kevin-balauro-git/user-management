@@ -1,7 +1,3 @@
-<!-- <div
-  class="container mt-4 table-responsive"
-  *ngIf="getUserListObs() | async as userList; else noList"
-> -->
 <div class="container mt-4 table-responsive" *ngIf="usersList; else noList">
   <table class="table table-striped table-hover caption-top">
     <caption class="container-fluid">
@@ -26,7 +22,14 @@
 
     <thead class="table-dark align-middle">
       <tr>
-        <th class="fs-4" scope="col">ID</th>
+        <th class="fs-4" scope="col" (click)="sort('id')">
+          <div class="row">
+            <div class="col d-flex justify-content-start align-items-center">
+              <img class="h-25" [src]="sortImage()" />
+              <span class="mx-1">ID</span>
+            </div>
+          </div>
+        </th>
         <th class="fs-4" scope="col">Name</th>
         <th class="fs-4" scope="col">Username</th>
         <th class="fs-4" scope="col">Email</th>

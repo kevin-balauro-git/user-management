@@ -40,7 +40,10 @@ namespace UserManagement.API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery] string searchItem = "", [FromQuery] string sortOrder="desc")
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers(
+            [FromQuery] string searchItem = "", 
+            [FromQuery] string sortOrder="desc"
+            )
         {
             var usersDto = await _userRepository.GetUsersAsync(searchItem, sortOrder);
             

@@ -41,8 +41,9 @@ namespace UserManagement.API.Repository
 
             
             var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
-
-            return usersDto.OrderBy(u => u.Id).ToList();
+            if(sortOrder.Equals("desc"))
+                return usersDto.OrderBy(u => u.Id).ToList();
+            return usersDto.OrderByDescending(u => u.Id).ToList();
         }
 
 

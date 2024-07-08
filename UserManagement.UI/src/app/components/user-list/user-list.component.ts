@@ -20,6 +20,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   private userList$: Observable<User[]> | undefined;
   private users: User[] | undefined;
   private usersSub$: Subscription | undefined;
+  public isDesc: boolean = true;
 
   constructor(
     private userApiService: UserApiService,
@@ -86,7 +87,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         this.hasDeleted = false;
-
+        this.usersSub$?.unsubscribe();
         this.usersSub$ = this.userApiService.getUsers().subscribe({
           next: (data) => (this.users = data),
           error: (err) => {
@@ -98,11 +99,30 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public search(item: any): void {
+    this.usersSub$?.unsubscribe();
     this.usersSub$ = this.userApiService.getUsers(item.searchItem).subscribe({
       next: (data) => (this.users = data),
       error: (err) => {
         this.authService.logout();
       },
     });
+  }
+
+  public sort(sortName: string): void {
+    this.isDesc = !this.isDesc;
+    this.usersSub$?.unsubscribe();
+    this.usersSub$ = this.userApiService
+      .getUsers('', this.isDesc === true ? 'desc' : 'asc')
+      .subscribe({
+        next: (data) => (this.users = data),
+        error: (err) => {
+          this.authService.logout();
+        },
+      });
+  }
+
+  public sortImage() {
+    if (this.isDesc) return '../../../assets/img/desc.png';
+    return '../../../assets/img/asc.png';
   }
 }

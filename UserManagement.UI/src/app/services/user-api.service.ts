@@ -12,9 +12,12 @@ export class UserApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getUsers(searchItem: string = ''): Observable<User[]> {
+  public getUsers(
+    searchItem: string = '',
+    sortOrder: string = 'desc'
+  ): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}`, {
-      params: { searchItem: searchItem },
+      params: { searchItem: searchItem, sortOrder: sortOrder },
     });
   }
 
