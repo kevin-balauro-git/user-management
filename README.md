@@ -19,3 +19,4 @@
      ```
       docker compose run
      ```
+  5. Open your browser and navigate to `http://localhost:4200`
