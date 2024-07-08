@@ -13,10 +13,11 @@
     ```
   3. Navigate to the `user-management` subfolder in a console window.
   4. Run the following commands at the root of the folder.
+     
      ```
       docker compose build
      ```
      ```
       docker compose run
      ```
-  5. Open your browser and navigate to `http://localhost:4200`
+  6. Open your browser and navigate to `http://localhost:4200`
