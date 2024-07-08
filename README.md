@@ -11,7 +11,7 @@
     ```
      git clone https://github.com/kevin-balauro-git/user-management.git 
     ```
-  3. Navigate to the `user-management` subfolder in a console window.
+  3. Navigate to the `user-management` folder in a console window.
   4. Run the following commands at the root of the folder.
      
      ```
