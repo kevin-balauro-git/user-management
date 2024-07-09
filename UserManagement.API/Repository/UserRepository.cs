@@ -29,17 +29,18 @@ namespace UserManagement.API.Repository
             _roleManager = roleManager;
         }
 
-        public async Task<List<UserDto>> GetUsersAsync(string searchItem, string sortOrder)
+        public async Task<List<UserDto>> GetUsersAsync(string searchItem, string sortOrder, string username)
         {
-            var users = await _userContext.Users.Where(u =>
+            var users = await _userContext.Users
+                .Where(u => !u.Username.Contains(username))
+                .Where(u =>
                  u.Name.FirstName.ToLower().Contains(searchItem.ToLower()) ||
                  u.Name.LastName.ToLower().Contains(searchItem.ToLower()) ||
                  u.Email.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Username.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Phone.ToLower().Contains(searchItem.ToLower())
+                 u.Phone.ToLower().Contains(searchItem.ToLower()) ||
+                 u.Username.ToLower().Contains(searchItem.ToLower())
             ).ToListAsync();
 
-            
             var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
             if(sortOrder.Equals("desc"))
                 return usersDto.OrderBy(u => u.Id).ToList();

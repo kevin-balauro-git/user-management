@@ -26,6 +26,7 @@ namespace UserManagement.API.Services
 
             var claims = new List<Claim>
             {
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
                 new Claim(type:"isAdmin", value:user.IsAdmin)

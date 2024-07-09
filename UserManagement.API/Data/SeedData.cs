@@ -39,8 +39,8 @@ namespace UserManagement.API.Data
                         Name = {FirstName="Antonio", LastName="Luna"},
                         Username = "antonluna",
                         Email = "antonluna@email.com",
-                        Password = "juanLun4uno*",
-                        Phone = "09583452456",
+                        Password = "antonLun4uno*",
+                        Phone = "09588693556",
                         Address =
                         {
                             City ="Badoc",
@@ -97,7 +97,7 @@ namespace UserManagement.API.Data
                         },
                         IsAdmin = "false"
                     },
-                     new User{
+                    new User{
 
                         Name = {FirstName="Sultan", LastName="Kudarat"},
                         Username = "mkudarat1",
@@ -117,7 +117,8 @@ namespace UserManagement.API.Data
                             }
                         },
                         IsAdmin = "false"
-                    }, new User{
+                    }, 
+                    new User{
 
                         Name = {FirstName="Lakan", LastName="Kudarat"},
                         Username = "mkudarat21",

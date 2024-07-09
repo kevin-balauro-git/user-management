@@ -45,7 +45,8 @@ namespace UserManagement.API.Controllers
             [FromQuery] string sortOrder="desc"
             )
         {
-            var usersDto = await _userRepository.GetUsersAsync(searchItem, sortOrder);
+            _logger.LogInformation("claim value: {@username}",User.FindFirst(ClaimTypes.GivenName)?.Value);
+            var usersDto = await _userRepository.GetUsersAsync(searchItem, sortOrder, User.FindFirst(ClaimTypes.GivenName)?.Value);
             
             return Ok(usersDto);     
         }
