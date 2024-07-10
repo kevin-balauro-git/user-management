@@ -18,8 +18,10 @@ namespace UserManagement.API.Extensions
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AccessUser>>();
 
                 await userContext.Database.MigrateAsync();
-                await SeedData.InitializeDb(userContext,userManager);
-            
+                if (!userContext.Users.Any())
+                {
+                    await SeedData.InitializeDb(userContext, userManager);
+                }
             }
             
             return app;
