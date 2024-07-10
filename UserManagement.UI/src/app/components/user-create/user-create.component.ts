@@ -1,5 +1,5 @@
 import { JsonPipe, Location, NgIf } from '@angular/common';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,6 +11,7 @@ import { PasswordValidator } from '../../shared/validation/password.validator';
 import { ConfirmPasswordValidator } from '../../shared/validation/confirmPassword.validator';
 import { UserApiService } from '../../services/user-api.service';
 import { Router } from '@angular/router';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-user-create',
@@ -20,8 +21,6 @@ import { Router } from '@angular/router';
   styleUrl: './user-create.component.css',
 })
 export class UserCreateComponent implements AfterViewInit {
-  private map: any;
-  private marker!: any;
   private showPassword: boolean = false;
 
   private createUserForm: FormGroup = this.formBuilder.group({
@@ -80,7 +79,8 @@ export class UserCreateComponent implements AfterViewInit {
     private location: Location,
     private formBuilder: FormBuilder,
     private router: Router,
-    private userApiService: UserApiService
+    private userApiService: UserApiService,
+    private mapService: MapService
   ) {}
 
   public ngAfterViewInit(): void {
@@ -110,48 +110,19 @@ export class UserCreateComponent implements AfterViewInit {
   get confirmPassword() {
     return this.createUserForm.controls['passGroup'].get('confirmPassword');
   }
+
   get password() {
     return this.createUserForm.controls['passGroup'].get('password');
   }
 
   private initMap(): void {
-    this.map = L.map('map', {
-      center: [14.6091, 121.0223],
-      zoom: 12,
-      zoomControl: true,
-    });
-
-    const tiles = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        maxZoom: 18,
-        minZoom: 3,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }
+    this.mapService.createMap();
+    this.mapService.createTileLayer();
+    this.mapService.markPosition(
+      this.createUserForm.controls['address'].get('geoLocation.latitude'),
+      this.createUserForm.controls['address'].get('geoLocation.longitude')
     );
-
-    this.map.on('click', (e: any) => {
-      const icon = new L.Icon.Default();
-      icon.options.shadowSize = [0, 0];
-
-      if (this.marker) this.map.removeLayer(this.marker);
-
-      this.marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: icon });
-
-      this.createUserForm.controls['address']
-        .get('geoLocation.latitude')
-        ?.setValue(e.latlng.lat);
-
-      this.createUserForm.controls['address']
-        .get('geoLocation.longitude')
-        ?.setValue(e.latlng.lng);
-
-      this.map.addLayer(this.marker);
-      this.marker.addTo(this.map);
-    });
-
-    tiles.addTo(this.map);
+    this.mapService.mapAddToTiles();
   }
 
   public hasShowPassword(): boolean {
@@ -194,7 +165,8 @@ export class UserCreateComponent implements AfterViewInit {
   }
 
   public populateData(): void {
-    if (this.marker) this.map.removeLayer(this.marker);
+    if (this.mapService.Marker)
+      this.mapService.Map.removeLayer(this.mapService.Marker);
     this.createUserForm.controls['name'].get('firstName')?.setValue('Protacio');
     this.createUserForm.controls['name'].get('lastName')?.setValue('Mercado');
     this.createUserForm.controls['username'].setValue('joserizz-al');
@@ -212,16 +184,14 @@ export class UserCreateComponent implements AfterViewInit {
       ?.setValue('Francisco Mercado ');
     this.createUserForm.controls['address'].get('streetNumber')?.setValue('5');
     this.createUserForm.controls['address'].get('zipCode')?.setValue('4028');
-    this.createUserForm.controls['address']
-      .get('geoLocation.latitude')
-      ?.setValue(14.5826);
-    this.createUserForm.controls['address']
-      .get('geoLocation.longitude')
-      ?.setValue(120.9787);
 
-    this.marker = L.marker([14.5826, 120.9787], {
-      icon: new L.Icon.Default(),
-    }).addTo(this.map);
+    this.mapService.markPosition(
+      this.createUserForm.controls['address'].get('geoLocation.latitude'),
+      this.createUserForm.controls['address'].get('geoLocation.longitude')
+    );
+    this.mapService.createMarker(14.5826, 120.9787);
+    this.mapService.Marker.addTo(this.mapService.Map);
+
     window.scrollTo(0, 0);
   }
 

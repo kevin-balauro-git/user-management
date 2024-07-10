@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { PasswordValidator } from '../../shared/validation/password.validator';
 import { AuthService } from '../../services/auth.service';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -20,9 +21,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css',
 })
-export class UserDetailComponent implements OnInit, AfterViewInit {
-  private map: any;
-  private marker: any;
+export class UserDetailComponent implements OnInit {
   private showPassword: boolean = false;
   private disable = true;
   private updateForm!: FormGroup;
@@ -39,7 +38,8 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
     private router: Router,
     private location: Location,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private mapService: MapService
   ) {}
 
   get form() {
@@ -110,54 +110,20 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
     this.onGetUser();
   }
 
-  public ngAfterViewInit(): void {}
-
   private initMap(latitude: number, longitude: number) {
-    const icon = new L.Icon.Default();
-    icon.options.shadowSize = [0, 0];
+    this.mapService.setCenter(latitude, longitude);
+    this.mapService.createMap();
+    this.mapService.disableMap();
 
-    this.map = L.map('map', {
-      center: [latitude, longitude],
-      zoom: 12,
-      zoomControl: false,
-    });
+    this.mapService.createMarker(latitude, longitude);
+    this.mapService.Marker.addTo(this.mapService.Map);
+    this.mapService.createTileLayer();
 
-    this.map.dragging.disable();
-    this.map.touchZoom.disable();
-    this.map.doubleClickZoom.disable();
-    this.map.scrollWheelZoom.disable();
-    this.map.boxZoom.disable();
-    this.map.keyboard.disable();
-
-    this.marker = L.marker([latitude, longitude], { icon: icon });
-    this.marker.addTo(this.map);
-    const tiles = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        maxZoom: 18,
-        minZoom: 3,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }
+    this.mapService.markPosition(
+      this.updateForm.controls['address'].get('geoLocation.latitude'),
+      this.updateForm.controls['address'].get('geoLocation.longitude')
     );
-    this.map.on('click', (e: any) => {
-      if (this.marker) this.map.removeLayer(this.marker);
-
-      this.marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: icon });
-
-      this.updateForm.controls['address']
-        .get('geoLocation.latitude')
-        ?.setValue(e.latlng.lat.toString());
-
-      this.updateForm.controls['address']
-        .get('geoLocation.longitude')
-        ?.setValue(e.latlng.lng.toString());
-
-      this.map.addLayer(this.marker);
-      this.marker.addTo(this.map);
-    });
-
-    tiles.addTo(this.map);
+    this.mapService.mapAddToTiles();
   }
 
   private onGetUser(): void {
@@ -219,13 +185,7 @@ export class UserDetailComponent implements OnInit, AfterViewInit {
   public edit() {
     this.disable = false;
 
-    this.map.dragging.enable();
-    this.map.touchZoom.enable();
-    this.map.doubleClickZoom.enable();
-    this.map.scrollWheelZoom.enable();
-    this.map.boxZoom.enable();
-    this.map.keyboard.enable();
-
+    this.mapService.enableMap();
     this.updateForm.get('email')?.enable();
     this.updateForm.get('password')?.enable();
     this.updateForm.get('phone')?.enable();
