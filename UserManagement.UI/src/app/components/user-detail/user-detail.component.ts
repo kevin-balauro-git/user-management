@@ -116,7 +116,7 @@ export class UserDetailComponent implements OnInit {
     this.mapService.disableMap();
 
     this.mapService.createMarker(latitude, longitude);
-    this.mapService.Marker.addTo(this.mapService.Map);
+    this.mapService.markerAddToMap();
     this.mapService.createTileLayer();
 
     this.mapService.markPosition(

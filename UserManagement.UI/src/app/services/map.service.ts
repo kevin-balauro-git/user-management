@@ -80,6 +80,9 @@ export class MapService {
     this.tiles.addTo(this.map);
   }
 
+  public markerAddToMap() {
+    this.marker.addTo(this.map);
+  }
   public disableMap() {
     this.map.dragging.disable();
     this.map.touchZoom.disable();
@@ -87,5 +90,14 @@ export class MapService {
     this.map.scrollWheelZoom.disable();
     this.map.boxZoom.disable();
     this.map.keyboard.disable();
+  }
+
+  public enableMap() {
+    this.map.dragging.enable();
+    this.map.touchZoom.enable();
+    this.map.doubleClickZoom.enable();
+    this.map.scrollWheelZoom.enable();
+    this.map.boxZoom.enable();
+    this.map.keyboard.enable();
   }
 }
