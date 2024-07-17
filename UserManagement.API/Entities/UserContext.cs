@@ -5,23 +5,31 @@ using UserManagement.API.Entities.Configuration;
 
 namespace UserManagement.API.Entities
 {
-    public class UserContext : IdentityDbContext<AccessUser>
+    public class UserContext : IdentityDbContext<
+     User,
+     Role,
+     int,
+     IdentityUserClaim<int>,
+     UserRole,
+     IdentityUserLogin<int>,
+     IdentityRoleClaim<int>,
+     IdentityUserToken<int>>
     {
-        public DbSet<User> Users { get; set; }
+
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<User>().HasMany(ur => ur.UserRoles).WithOne(u => u.User).HasForeignKey(ur => ur.UserId).IsRequired();
+            modelBuilder.Entity<Role>().HasMany(ur => ur.UserRoles).WithOne(u => u.Role).HasForeignKey(ur => ur.RoleId).IsRequired();
 
-            new UserEntityUuidPropertyConfig().Configure(modelBuilder.Entity<User>());
-            new UserEntityIdPropertyConfig().Configure(modelBuilder.Entity<User>());
             new UserEntityNamePropertyConfig().Configure(modelBuilder.Entity<User>());
             new UserEntityAddressPropertyConfig().Configure(modelBuilder.Entity<User>());
 
         }
 
     }
+
 }

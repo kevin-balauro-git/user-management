@@ -43,7 +43,7 @@ export class UserCreateComponent implements AfterViewInit {
       ],
     }),
 
-    username: ['', [Validators.required, Validators.minLength(6)]],
+    userName: ['', [Validators.required, Validators.minLength(6)]],
     passGroup: this.formBuilder.nonNullable.group({
       password: [
         '',
@@ -60,7 +60,7 @@ export class UserCreateComponent implements AfterViewInit {
       ],
     }),
     email: ['', [Validators.required, Validators.email]],
-    phone: [''],
+    phoneNumber: [''],
     address: this.formBuilder.nonNullable.group({
       streetName: [''],
       streetNumber: [''],
@@ -100,11 +100,15 @@ export class UserCreateComponent implements AfterViewInit {
   }
 
   get username() {
-    return this.createUserForm.get('username');
+    return this.createUserForm.get('userName');
   }
 
   get email() {
     return this.createUserForm.get('email');
+  }
+
+  get phoneNumber() {
+    return this.createUserForm.get('phoneNumber');
   }
 
   get confirmPassword() {
@@ -118,10 +122,12 @@ export class UserCreateComponent implements AfterViewInit {
   private initMap(): void {
     this.mapService.createMap();
     this.mapService.createTileLayer();
+
     this.mapService.markPosition(
       this.createUserForm.controls['address'].get('geoLocation.latitude'),
       this.createUserForm.controls['address'].get('geoLocation.longitude')
     );
+
     this.mapService.mapAddToTiles();
   }
 
@@ -136,9 +142,9 @@ export class UserCreateComponent implements AfterViewInit {
         firstName: formData.name.firstName,
         lastName: formData.name.lastName,
       },
-      username: formData.username,
+      userName: formData.userName,
       email: formData.email,
-      phone: formData.phone,
+      phoneNumber: formData.phoneNumber,
       password: formData.passGroup.password,
       address: {
         city: formData.address.city,
@@ -150,7 +156,6 @@ export class UserCreateComponent implements AfterViewInit {
           longitude: formData.address.geoLocation.longitude.toString(),
         },
       },
-      isAdmin: 'false',
     };
 
     this.userApiService.createUser(newUser).subscribe({
@@ -169,9 +174,9 @@ export class UserCreateComponent implements AfterViewInit {
       this.mapService.Map.removeLayer(this.mapService.Marker);
     this.createUserForm.controls['name'].get('firstName')?.setValue('Protacio');
     this.createUserForm.controls['name'].get('lastName')?.setValue('Mercado');
-    this.createUserForm.controls['username'].setValue('joserizz-al');
+    this.createUserForm.controls['userName'].setValue('joserizz-al');
     this.createUserForm.controls['email'].setValue('joserizal@email.com');
-    this.createUserForm.controls['phone'].setValue('07031892');
+    this.createUserForm.controls['phoneNumber'].setValue('09470318921');
     this.createUserForm.controls['passGroup']
       .get('password')
       ?.setValue('laliP1lipin@s');

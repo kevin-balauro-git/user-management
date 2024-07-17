@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,24 +14,29 @@ namespace UserManagement.API.Services
         private readonly IConfiguration _configuration;
         private readonly SymmetricSecurityKey _symmetricSecurityKey;
         private readonly ILogger<JwtService> _logger;
-        public JwtService(IConfiguration configuration, ILogger<JwtService> logger)
+        private readonly UserManager<User> _userManager;
+        public JwtService(IConfiguration configuration, ILogger<JwtService> logger, UserManager<User> userManager)
         {
             _configuration = configuration;
             _logger = logger;
+            _userManager = userManager;
             _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));
         }
 
-        public string GenerateJwt(AccessUser user)
+        public async Task<string> GenerateJwt(User user)
         {
             SigningCredentials credentials = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
-                new Claim(type:"isAdmin", value:user.IsAdmin)
-            };
+        {
+
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+        };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -42,9 +48,12 @@ namespace UserManagement.API.Services
             };
 
             SecurityToken token = new JwtSecurityTokenHandler().CreateToken(tokenDescriptor);
-            
+
             return new JwtSecurityTokenHandler().WriteToken(token);
 
         }
+
+
     }
+
 }

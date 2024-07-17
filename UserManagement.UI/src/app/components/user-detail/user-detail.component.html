@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="row mb-3">
-              <div class="col-6">
+              <div class="col">
                 <label class="small">Phone</label>
                 <input
                   class="form-control"
@@ -110,17 +110,6 @@
                   [value]="phone?.value"
                   formControlName="phone"
                 />
-              </div>
-              <div class="col-6">
-                <label class="small">Is Admin</label>
-                <select class="form-select" formControlName="isAdmin">
-                  <option [value]="admin?.value" [selected]="true">
-                    {{ admin?.value }}
-                  </option>
-                  <option [value]="admin?.value === 'true' ? false : true">
-                    {{ admin?.value === "true" ? false : true }}
-                  </option>
-                </select>
               </div>
             </div>
             <div class="row mb-3">
@@ -173,7 +162,7 @@
               </div>
             </div>
             <div>
-              <div *ngIf="isAdmin" class="d-inline">
+              <div class="d-inline">
                 <button
                   *ngIf="isDisabled; else update"
                   class="btn btn-primary mx-1"

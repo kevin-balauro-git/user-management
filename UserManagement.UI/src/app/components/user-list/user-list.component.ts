@@ -4,7 +4,7 @@ import { User } from '../../models/user.interface';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { UserAuthService } from '../../services/user-auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -25,13 +25,14 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(
     private userApiService: UserApiService,
     private router: Router,
-    private authService: AuthService,
+    private userAuthService: UserAuthService,
     private formbuilder: FormBuilder
   ) {}
 
   get searchForm() {
     return this.form;
   }
+
   get deleted(): boolean {
     return this.hasDeleted;
   }
@@ -48,23 +49,16 @@ export class UserListComponent implements OnInit, OnDestroy {
     return this.userList$;
   }
 
-  public isAdmin(): boolean {
-    if (this.authService.userValue?.isAdmin.toLowerCase() === 'true')
-      return true;
-    else return false;
-  }
-
   public hasLogin(): boolean {
-    if (this.authService.userValue) return true;
-    else return false;
+    return true;
   }
 
   ngOnInit(): void {
     this.usersSub$ = this.userApiService.getUsers().subscribe({
-      next: (data) => (this.users = data),
-      error: (err) => {
-        this.authService.logout();
+      next: (data) => {
+        this.users = data;
       },
+      error: (err) => {},
     });
   }
 
@@ -90,9 +84,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.usersSub$?.unsubscribe();
         this.usersSub$ = this.userApiService.getUsers().subscribe({
           next: (data) => (this.users = data),
-          error: (err) => {
-            this.authService.logout();
-          },
+          error: (err) => {},
         });
       }, 700);
     }
@@ -102,9 +94,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.usersSub$?.unsubscribe();
     this.usersSub$ = this.userApiService.getUsers(item.searchItem).subscribe({
       next: (data) => (this.users = data),
-      error: (err) => {
-        this.authService.logout();
-      },
+      error: (err) => {},
     });
   }
 
@@ -115,9 +105,7 @@ export class UserListComponent implements OnInit, OnDestroy {
       .getUsers('', this.isDesc === true ? 'desc' : 'asc')
       .subscribe({
         next: (data) => (this.users = data),
-        error: (err) => {
-          this.authService.logout();
-        },
+        error: (err) => {},
       });
   }
 

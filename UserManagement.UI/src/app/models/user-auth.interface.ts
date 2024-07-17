@@ -1,6 +1,6 @@
-export interface AuthUser {
+export interface UserAuth {
+  nameId: string;
   email: string;
   userName: string;
-  isAdmin: string;
   token: string;
 }

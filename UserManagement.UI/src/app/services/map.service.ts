@@ -83,6 +83,7 @@ export class MapService {
   public markerAddToMap() {
     this.marker.addTo(this.map);
   }
+
   public disableMap() {
     this.map.dragging.disable();
     this.map.touchZoom.disable();

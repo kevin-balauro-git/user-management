@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text.Json.Serialization;
 using UserManagement.API.Data;
 using UserManagement.API.Entities;
 using UserManagement.API.Extensions;
@@ -36,7 +37,9 @@ try
 
     builder.Services.AddProblemDetails();
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddJsonOptions(options =>
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+    );
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
@@ -44,18 +47,22 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("Database"))
     );
 
-    builder.Services.AddIdentity<AccessUser, IdentityRole>(options =>
+    builder.Services.AddIdentityCore<User>(options =>
         {
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireLowercase = true;
             options.Password.RequireDigit = true;
             options.Password.RequireUppercase = true;
-        }).AddEntityFrameworkStores<UserContext>();
+        })
+        .AddRoles<Role>()
+        .AddRoleManager<RoleManager<Role>>()
+        .AddSignInManager<SignInManager<User>>()
+        .AddEntityFrameworkStores<UserContext>();
 
     builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme =
+            options.DefaultChallengeScheme =
             options.DefaultForbidScheme =
             options.DefaultScheme =
             options.DefaultSignInScheme =
@@ -80,10 +87,10 @@ try
 
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-    builder.Services.AddScoped<SeedData>(); 
+    builder.Services.AddScoped<SeedData>();
     builder.Services.AddScoped<IJwtService, JwtService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
-   
+
 
     WebApplication app = builder.Build();
 
@@ -114,5 +121,5 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }

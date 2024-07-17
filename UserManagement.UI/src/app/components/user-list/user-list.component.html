@@ -37,11 +37,7 @@
         <th class="fs-4" scope="col">Address</th>
         <th class="fs-4" scope="col" *ngIf="hasLogin()"></th>
         <th class="fs-4" scope="col" *ngIf="hasLogin()">
-          <button
-            class="btn btn-success"
-            *ngIf="isAdmin()"
-            (click)="onCreateUser()"
-          >
+          <button class="btn btn-success" (click)="onCreateUser()">
             <img
               src="../../../assets/img/add-user.png"
               style="height: 24px"
@@ -57,9 +53,9 @@
       <tr *ngFor="let user of usersList">
         <th scope="row">{{ user.id }}</th>
         <td>{{ user.name.firstName }} {{ user.name.lastName }}</td>
-        <td>{{ user.username }}</td>
+        <td>{{ user.userName }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.phone }}</td>
+        <td>{{ user.phoneNumber }}</td>
         <td>
           {{ user.address.streetNumber }} {{ user.address.streetName }}
           {{ user.address.city }} {{ user.address.zipCode }}
@@ -81,7 +77,6 @@
             class="btn btn-danger"
             type="button"
             (click)="onDeleteUser(user.id)"
-            *ngIf="isAdmin()"
           >
             <img
               src="../../../assets/img/delete.png"

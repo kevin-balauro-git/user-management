@@ -10,39 +10,55 @@ namespace UserManagement.API.Repository
 {
     public class UserRepository : IUserRepository
     {
+
         private readonly ILogger<UsersController> _logger;
-        private readonly UserContext _userContext;
+
         private readonly IMapper _mapper;
-        private readonly UserManager<AccessUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         public UserRepository(
             ILogger<UsersController> logger,
-            UserContext userContext,
-            UserManager<AccessUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager
+            )
         {
             _logger = logger;
-            _userContext = userContext;
             _mapper = mapper;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        public async Task<List<UserDto>> GetUsersAsync(string searchItem, string sortOrder, string username)
+        public async Task<List<UserDto>> GetUsersAsync(
+            string searchItem,
+            string sortOrder,
+            string role,
+            string username)
         {
-            var users = await _userContext.Users
-                .Where(u => !u.Username.Contains(username))
+            IList<User> users = new List<User>();
+
+            if (role.Equals("Employee"))
+            {
+                users = await _userManager.GetUsersInRoleAsync(role);
+            }
+
+            if (role.Equals("Admin"))
+            {
+                users = await _userManager.Users.ToListAsync();
+            }
+
+            var filteredUsers = users
+                .Where(u => !u.UserName!.Contains(username))
                 .Where(u =>
                  u.Name.FirstName.ToLower().Contains(searchItem.ToLower()) ||
                  u.Name.LastName.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Email.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Phone.ToLower().Contains(searchItem.ToLower()) ||
-                 u.Username.ToLower().Contains(searchItem.ToLower())
-            ).ToListAsync();
+                 u.Email!.ToLower().Contains(searchItem.ToLower()) ||
+                 u.PhoneNumber!.ToLower().Contains(searchItem.ToLower()) ||
+                 u.UserName!.ToLower().Contains(searchItem.ToLower()))
+                .ToList();
 
-            var usersDto = users.Select(u => _mapper.Map<UserDto>(u)).ToList();
-            if(sortOrder.Equals("desc"))
+            var usersDto = filteredUsers.Select(u => _mapper.Map<UserDto>(u)).ToList();
+            if (sortOrder.Equals("desc"))
                 return usersDto.OrderBy(u => u.Id).ToList();
             return usersDto.OrderByDescending(u => u.Id).ToList();
         }
@@ -50,7 +66,7 @@ namespace UserManagement.API.Repository
 
         public async Task<UserDto> GetUserAsync(int id)
         {
-           var user =  await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user != null)
                 return _mapper.Map<UserDto>(user);
             return null;
@@ -58,65 +74,47 @@ namespace UserManagement.API.Repository
 
         public async Task<User> CreateUserAsync(UserDto newUserDto)
         {
-            User? newUser = _mapper.Map<User>(newUserDto);
-            
-            var newAccessUser = new AccessUser
-            {    
-                Id = newUser.Uuid.ToString(),
-                UserName = newUserDto.Username,
-                Email = newUserDto.Email,
-                IsAdmin = newUserDto.IsAdmin,
-            };
-             
-            await _userManager.CreateAsync(newAccessUser, newUserDto.Password);
-            
-            var adminRoleExist = await _roleManager.RoleExistsAsync("Admin");
-            var employeeRoleExist = await _roleManager.RoleExistsAsync("Employee");
-
-            if (!adminRoleExist && !employeeRoleExist)
+            User newUser = _mapper.Map<User>(newUserDto);
+            newUser.SecurityStamp = Guid.NewGuid().ToString();
+            try
             {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-                await _roleManager.CreateAsync(new IdentityRole("Employee"));
+                await _userManager.CreateAsync(newUser, newUser.Password);
+
+                await _userManager.AddToRoleAsync(newUser, "Employee");
+            }
+            catch (AggregateException ex)
+            {
+                _logger.LogInformation("Aggregate Error: {@message}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Error: {@message}", ex.Message);
             }
 
-            if (bool.Parse(newUserDto.IsAdmin))
-                await _userManager.AddToRoleAsync(newAccessUser, "Admin ");
-            else
-                await _userManager.AddToRoleAsync(newAccessUser, "Employee");
-  
-            _userContext.Add(newUser);
-            await _userContext.SaveChangesAsync();
-            
-                      
+
             return newUser;
         }
 
-        public async Task<User> UpdateUserAsync(int id,UserDto updatedUserDto)
+        public async Task<User> UpdateUserAsync(int id, UserDto updatedUserDto)
         {
-            var updatedUser = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-            var users = await _userManager.Users.ToListAsync();
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == updatedUser.Uuid.ToString());
-            
+            var updatedUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+
             if (updatedUser != null)
             {
                 updatedUser.Name.FirstName = updatedUserDto.Name.FirstName;
                 updatedUser.Name.LastName = updatedUserDto.Name.LastName;
                 updatedUser.Email = updatedUserDto.Email;
-                updatedUser.Username = updatedUserDto.Username;
+                updatedUser.UserName = updatedUserDto.UserName;
                 updatedUser.Password = updatedUserDto.Password;
-                updatedUser.Phone = updatedUserDto.Phone;
-                updatedUser.IsAdmin = updatedUserDto.IsAdmin;
+                updatedUser.PhoneNumber = updatedUserDto.PhoneNumber;
                 updatedUser.Address.StreetNumber = updatedUserDto.Address.StreetNumber;
                 updatedUser.Address.StreetName = updatedUserDto.Address.StreetName;
                 updatedUser.Address.City = updatedUserDto.Address.City;
                 updatedUser.Address.ZipCode = updatedUserDto.Address.ZipCode;
                 updatedUser.Address.GeoLocation.Latitude = updatedUserDto.Address.GeoLocation.Latitude;
                 updatedUser.Address.GeoLocation.Longitude = updatedUserDto.Address.GeoLocation.Longitude;
-
-                user.IsAdmin = updatedUser.IsAdmin;
-
-                await _userContext.SaveChangesAsync();
-                await _userManager.UpdateAsync(user);
+                updatedUser.DateUpdated = DateTime.UtcNow;
+                await _userManager.UpdateAsync(updatedUser);
                 return updatedUser;
             }
             return null;
@@ -124,33 +122,37 @@ namespace UserManagement.API.Repository
 
         public async Task<User> DeleteUserAsync(int id)
         {
-            
-            var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Id == id);
-            var accessUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == user.Uuid.ToString());
-            
-            if (user != null)
+            try
             {
-                _userContext.Users.Remove(user);
-                await _userContext.SaveChangesAsync();
-                await _userManager.DeleteAsync(accessUser);
-                return user;
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+                _logger.LogInformation("Deleted User: {@user}", user);
+                if (user != null)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return user;
+                }
             }
+
+            catch (ArgumentNullException ex)
+            {
+                _logger.LogInformation("Error: User not found");
+            }
+
             return null;
-            
         }
 
         public async Task<Boolean> checkEmail(UserDto userDto)
         {
-           var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(userDto.Email));
-            if(user != null)
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email.Equals(userDto.Email));
+            if (user != null)
                 return true;
-            
+
             return false;
         }
 
         public async Task<Boolean> checkUsername(UserDto userDto)
         {
-            var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Username.Equals(userDto.Username));
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.Equals(userDto.UserName));
             if (user != null)
                 return true;
 
@@ -159,9 +161,10 @@ namespace UserManagement.API.Repository
 
         public async Task<Boolean> checkId(UserDto userDto)
         {
-            var user = await _userContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(userDto.Id));
-            if(user != null) return true;
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id.Equals(userDto.Id));
+            if (user != null) return true;
             return false;
         }
     }
+
 }

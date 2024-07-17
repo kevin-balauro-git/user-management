@@ -4,6 +4,6 @@ namespace UserManagement.API.Interface
 {
     public interface IJwtService
     {
-       string GenerateJwt(AccessUser user);
+        Task<string> GenerateJwt(User user);
     }
 }

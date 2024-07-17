@@ -4,10 +4,9 @@ import { Name } from './name.interface';
 export interface User {
   id: number;
   name: Name;
-  username: string;
+  userName: string;
   email: string;
   password: string;
-  phone: string;
+  phoneNumber: string;
   address: Address;
-  isAdmin: string;
 }

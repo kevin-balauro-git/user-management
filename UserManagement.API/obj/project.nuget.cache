@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rYAzpsGfp3g=",
+  "dgSpecHash": "MlIK4XXWRxo=",
   "success": true,
   "projectFilePath": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\UserManagement.API.csproj",
   "expectedPackageFiles": [
@@ -63,6 +63,7 @@
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\microsoft.web.infrastructure\\1.0.0\\microsoft.web.infrastructure.1.0.0.nupkg.sha512",
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Kevin Balauro\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\npgsql\\8.0.3\\npgsql.8.0.3.nupkg.sha512",
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.4\\npgsql.entityframeworkcore.postgresql.8.0.4.nupkg.sha512",
     "C:\\Users\\Kevin Balauro\\.nuget\\packages\\serilog\\4.0.0\\serilog.4.0.0.nupkg.sha512",

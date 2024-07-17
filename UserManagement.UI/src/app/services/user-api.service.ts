@@ -15,8 +15,8 @@ export class UserApiService {
   public getUsers(
     searchItem: string = '',
     sortOrder: string = 'desc'
-  ): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}`, {
+  ): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}`, {
       params: { searchItem: searchItem, sortOrder: sortOrder },
     });
   }
@@ -37,6 +37,6 @@ export class UserApiService {
   }
 
   public deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(`${this.baseUrl}/${id.toString()}`);
+    return this.http.delete<User>(`${this.baseUrl}/${id}`);
   }
 }

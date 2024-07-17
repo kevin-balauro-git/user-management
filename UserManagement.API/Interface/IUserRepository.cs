@@ -6,7 +6,7 @@ namespace UserManagement.API.Interface
 {
     public interface IUserRepository
     {
-        Task<List<UserDto>> GetUsersAsync(string searchItem,string sortOrder, string username);
+        Task<List<UserDto>> GetUsersAsync(string searchItem, string sortOrder, string role, string username);
         Task<UserDto> GetUserAsync(int id);
         Task<User> CreateUserAsync(UserDto newUserDto);
         Task<User> UpdateUserAsync(int id, UserDto updatedUserDto);

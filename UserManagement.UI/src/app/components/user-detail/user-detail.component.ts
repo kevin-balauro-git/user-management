@@ -11,7 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PasswordValidator } from '../../shared/validation/password.validator';
-import { AuthService } from '../../services/auth.service';
+import { UserAuthService } from '../../services/user-auth.service';
 import { MapService } from '../../services/map.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class UserDetailComponent implements OnInit {
     private router: Router,
     private location: Location,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    private userAuthService: UserAuthService,
     private mapService: MapService
   ) {}
 
@@ -48,10 +48,6 @@ export class UserDetailComponent implements OnInit {
 
   get isDisabled() {
     return this.disable;
-  }
-
-  get isAdmin() {
-    return this.authService.userValue?.isAdmin === 'true' ? true : false;
   }
 
   get firstName() {
@@ -152,7 +148,7 @@ export class UserDetailComponent implements OnInit {
         lastName: [user.name.lastName],
       }),
 
-      username: [user.username, [Validators.required, Validators.minLength(6)]],
+      username: [user.userName, [Validators.required, Validators.minLength(6)]],
       password: [
         { value: user.password, disabled: true },
         [
@@ -167,8 +163,7 @@ export class UserDetailComponent implements OnInit {
         { value: user.email, disabled: true },
         [Validators.required, Validators.email],
       ],
-      phone: [{ value: user.phone, disabled: true }],
-      isAdmin: [{ value: user.isAdmin, disabled: true }],
+      phone: [{ value: user.phoneNumber, disabled: true }],
       address: this.formBuilder.nonNullable.group({
         streetName: [{ value: user.address.streetName, disabled: true }],
         streetNumber: [{ value: user.address.streetNumber, disabled: true }],

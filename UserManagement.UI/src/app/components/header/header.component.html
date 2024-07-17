@@ -4,15 +4,10 @@
       <div class="col-6 my-auto">
         <h1>User Management</h1>
       </div>
-
-      <div class="col-1 offset-sm-4 my-auto" *ngIf="user === null">
-        <button class="btn btn-primary" type="button" (click)="login()">
-          Log In
-        </button>
-      </div>
-
-      <div class="col-1 offset-sm-4 my-auto" *ngIf="user">
-        <h4 class="text-white">{{ user.userName }}</h4>
+      <div class="col-1 offset-sm-4 my-auto" *ngIf="currentUser">
+        <h4 class="text-white" (click)="details()">
+          {{ currentUser.userName }}
+        </h4>
         <button class="btn btn-danger" type="button" (click)="logout()">
           LogOut
         </button>

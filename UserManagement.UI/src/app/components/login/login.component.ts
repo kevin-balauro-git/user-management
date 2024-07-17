@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -7,11 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthUser } from '../../models/auth-user.interface';
 import { JsonPipe, NgIf } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
-import { BehaviorSubject } from 'rxjs';
-import { UserApiService } from '../../services/user-api.service';
+import { UserAuthService } from '../../services/user-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +29,7 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private userAuthService: UserAuthService
   ) {}
 
   public get form() {
@@ -49,29 +45,31 @@ export class LoginComponent {
   }
 
   public employee(): void {
-    this.email.setValue('fdagojoy@email.com');
-    this.password.setValue('daG0nsa#uyu#oy');
     const employee = {
       email: 'fdagojoy@email.com',
       password: 'daG0nsa#uyu#oy',
     };
+    this.email.setValue(employee.email);
+    this.password.setValue(employee.password);
     setTimeout(() => this.login(employee), 300);
   }
 
   public admin(): void {
-    this.email.setValue('juanluna@email.com');
-    this.password.setValue('juanLun4uno*');
     const admin = {
-      email: 'juanluna@email.com',
-      password: 'juanLun4uno*',
+      email: 'admin@email.com',
+      password: 'Pa$$w0rd',
     };
+    this.email.setValue(admin.email);
+    this.password.setValue(admin.password);
+
     setTimeout(() => this.login(admin), 300);
   }
 
   public login(formData: any): void {
-    this.authService.login(formData).subscribe({
-      next: (user) => {
-        localStorage.setItem('user', JSON.stringify(user));
+    this.userAuthService.login(formData).subscribe({
+      next: (response) => {
+        localStorage.setItem('user', JSON.stringify(response));
+        this.userAuthService.currentUserSig.set(response);
         this.router.navigateByUrl('/users');
       },
       error: (error) => {
@@ -82,10 +80,6 @@ export class LoginComponent {
 
   public hasShowPassword(): boolean {
     return this.showPassword;
-  }
-
-  public back(): void {
-    this.router.navigateByUrl('/');
   }
 
   public show(): void {
