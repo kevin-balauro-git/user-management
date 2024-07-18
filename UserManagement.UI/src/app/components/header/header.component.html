@@ -5,9 +5,13 @@
         <h1>User Management</h1>
       </div>
       <div class="col-1 offset-sm-4 my-auto" *ngIf="currentUser">
-        <h4 class="text-white" (click)="details()">
+        <a
+          class="pe-auto fs-3 link-underline-dark link-light"
+          (click)="details()"
+          style="cursor: pointer"
+        >
           {{ currentUser.userName }}
-        </h4>
+        </a>
         <button class="btn btn-danger" type="button" (click)="logout()">
           LogOut
         </button>

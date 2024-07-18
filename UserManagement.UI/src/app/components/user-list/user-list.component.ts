@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { UserAuthService } from '../../services/user-auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Data } from '../../models/data.interface';
+import { Pagination } from '../../models/pagination.interface';
 
 @Component({
   selector: 'app-user-list',
@@ -17,9 +19,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class UserListComponent implements OnInit, OnDestroy {
   private hasDeleted: boolean = false;
   private form: FormGroup = this.formbuilder.group({ searchItem: [''] });
-  private userList$: Observable<User[]> | undefined;
+
   private users: User[] | undefined;
+  private pagination: Pagination | undefined;
   private usersSub$: Subscription | undefined;
+  private currentNumber: number = 0;
   public isDesc: boolean = true;
 
   constructor(
@@ -45,21 +49,30 @@ export class UserListComponent implements OnInit, OnDestroy {
     return this.users;
   }
 
-  public getUserListObs(): Observable<User[]> | undefined {
-    return this.userList$;
+  get pageNumber() {
+    return Array<number>(
+      Math.ceil(this.pagination?.totalCount! / this.pagination?.pageSize!)
+    );
   }
 
   public hasLogin(): boolean {
     return true;
   }
 
+  public getUsers(searchItem: string, sortOrder: string, pageNumber: number) {
+    this.usersSub$ = this.userApiService
+      .getUsers(searchItem, sortOrder, pageNumber)
+      .subscribe({
+        next: (data: Data) => {
+          this.pagination = data.pagination;
+          this.pageNumber;
+          this.users = data.users;
+        },
+        error: (err) => {},
+      });
+  }
   ngOnInit(): void {
-    this.usersSub$ = this.userApiService.getUsers().subscribe({
-      next: (data) => {
-        this.users = data;
-      },
-      error: (err) => {},
-    });
+    this.getUsers('', 'desc', 0);
   }
 
   ngOnDestroy(): void {
@@ -82,35 +95,42 @@ export class UserListComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.hasDeleted = false;
         this.usersSub$?.unsubscribe();
-        this.usersSub$ = this.userApiService.getUsers().subscribe({
-          next: (data) => (this.users = data),
-          error: (err) => {},
-        });
+        this.getUsers('', 'desc', 0);
       }, 700);
     }
   }
 
   public search(item: any): void {
     this.usersSub$?.unsubscribe();
-    this.usersSub$ = this.userApiService.getUsers(item.searchItem).subscribe({
-      next: (data) => (this.users = data),
-      error: (err) => {},
-    });
+    this.getUsers(item.searchItem, 'desc', 0);
   }
 
   public sort(sortName: string): void {
     this.isDesc = !this.isDesc;
     this.usersSub$?.unsubscribe();
-    this.usersSub$ = this.userApiService
-      .getUsers('', this.isDesc === true ? 'desc' : 'asc')
-      .subscribe({
-        next: (data) => (this.users = data),
-        error: (err) => {},
-      });
+    this.getUsers('', this.isDesc === true ? 'desc' : 'asc', 0);
   }
 
   public sortImage() {
     if (this.isDesc) return '../../../assets/img/desc.png';
     return '../../../assets/img/asc.png';
+  }
+
+  public page(n: number) {
+    this.currentNumber = n;
+    this.getUsers('', 'desc', this.currentNumber);
+  }
+
+  public previous() {
+    if (this.currentNumber < 0) return;
+    this.currentNumber = this.currentNumber - 1;
+    this.getUsers('', 'desc', this.currentNumber);
+  }
+
+  public next() {
+    if (this.currentNumber < this.pageNumber.length - 1) {
+      this.currentNumber = this.currentNumber + 1;
+      this.getUsers('', 'desc', this.currentNumber);
+    }
   }
 }

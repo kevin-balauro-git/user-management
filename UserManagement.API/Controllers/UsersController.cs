@@ -40,17 +40,27 @@ namespace UserManagement.API.Controllers
         [HttpGet]
  //       [Authorize]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers(
+            [FromQuery] PaginationDto paginationDto,
             [FromQuery] string searchItem = "", 
-            [FromQuery] string sortOrder= "desc"
+            [FromQuery] string sortOrder= "desc"       
             )
         {
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            _logger.LogInformation("Role {@role}",role);
-            var username = User.FindFirst(ClaimTypes.GivenName)?.Value;
-            _logger.LogInformation("Username {@username}", username);
-            var usersDto = await _userRepository.GetUsersAsync(searchItem, sortOrder, role, username);
-            
-            return Ok(usersDto);     
+            _logger.LogInformation("Pagination info: {@pagination}", paginationDto);
+            UserRoleDto userRoleDto = new UserRoleDto {
+                RoleName = User.FindFirst(ClaimTypes.Role)?.Value,
+                UserName = User.FindFirst(ClaimTypes.GivenName)?.Value
+            };
+            if(userRoleDto.RoleName.Equals(null) || userRoleDto.UserName.Equals(null))
+                return Unauthorized();
+           
+            var usersDto = await _userRepository.GetUsersAsync( searchItem, sortOrder, userRoleDto, paginationDto);
+            _logger.LogInformation("Count: {@count}", paginationDto.totalCount);
+            var result = new
+            {
+                pagination = paginationDto,
+                users = usersDto
+            };
+            return Ok(result);     
         }
         
         [HttpGet]

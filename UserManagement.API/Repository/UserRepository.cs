@@ -12,7 +12,6 @@ namespace UserManagement.API.Repository
     {
 
         private readonly ILogger<UsersController> _logger;
-
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
@@ -32,23 +31,25 @@ namespace UserManagement.API.Repository
         public async Task<List<UserDto>> GetUsersAsync(
             string searchItem,
             string sortOrder,
-            string role,
-            string username)
+            UserRoleDto userRoleDto,
+            PaginationDto pagination)
         {
             IList<User> users = new List<User>();
 
-            if (role.Equals("Employee"))
+            if (userRoleDto.RoleName.Equals("Employee"))
             {
-                users = await _userManager.GetUsersInRoleAsync(role);
+                users = await _userManager.GetUsersInRoleAsync(userRoleDto.RoleName);
             }
 
-            if (role.Equals("Admin"))
+            if (userRoleDto.RoleName.Equals("Admin"))
             {
                 users = await _userManager.Users.ToListAsync();
             }
 
+
+
             var filteredUsers = users
-                .Where(u => !u.UserName!.Contains(username))
+                .Where(u => !u.UserName!.Contains(userRoleDto.UserName))
                 .Where(u =>
                  u.Name.FirstName.ToLower().Contains(searchItem.ToLower()) ||
                  u.Name.LastName.ToLower().Contains(searchItem.ToLower()) ||
@@ -56,8 +57,10 @@ namespace UserManagement.API.Repository
                  u.PhoneNumber!.ToLower().Contains(searchItem.ToLower()) ||
                  u.UserName!.ToLower().Contains(searchItem.ToLower()))
                 .ToList();
+            _logger.LogInformation("Total Count: {@count}", filteredUsers.Count());
+            pagination.totalCount = filteredUsers.Count();
 
-            var usersDto = filteredUsers.Select(u => _mapper.Map<UserDto>(u)).ToList();
+            var usersDto = filteredUsers.Skip(pagination.pageNumber * pagination.pageSize).Take(pagination.pageSize).Select(u => _mapper.Map<UserDto>(u)).ToList();
             if (sortOrder.Equals("desc"))
                 return usersDto.OrderBy(u => u.Id).ToList();
             return usersDto.OrderByDescending(u => u.Id).ToList();

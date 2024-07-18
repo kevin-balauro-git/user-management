@@ -1,12 +1,105 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Prototypes\\UserManagementApp\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\dto\\paginationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\dto\\paginationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\interface\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\interface\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|d:\\prototypes\\usermanagementapp\\usermanagement.api\\dto\\loginuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93E75027-09EC-4581-BDF0-D397009675B3}|UserManagement.API\\UserManagement.API.csproj|solutionrelative:usermanagement.api\\dto\\loginuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Interface\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Interface\\IUserRepository.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Interface\\IUserRepository.cs",
+              "RelativeToolTip": "UserManagement.API\\Interface\\IUserRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAABoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T04:03:57.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoginUserDto.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Dto\\LoginUserDto.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Dto\\LoginUserDto.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Dto\\LoginUserDto.cs",
+              "RelativeToolTip": "UserManagement.API\\Dto\\LoginUserDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T03:56:50.129Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Repository\\UserRepository.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Repository\\UserRepository.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Repository\\UserRepository.cs",
+              "RelativeToolTip": "UserManagement.API\\Repository\\UserRepository.cs",
+              "ViewState": "AQIAADMAAACA/////78hwD4AAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T03:42:31.519Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "UserManagement.API\\Controllers\\UsersController.cs",
+              "ViewState": "AQIAAC8AAAAAAAAAAADYvzsAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T03:40:26.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PaginationDto.cs",
+              "DocumentMoniker": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Dto\\PaginationDto.cs",
+              "RelativeDocumentMoniker": "UserManagement.API\\Dto\\PaginationDto.cs",
+              "ToolTip": "D:\\Prototypes\\UserManagementApp\\UserManagement.API\\Dto\\PaginationDto.cs",
+              "RelativeToolTip": "UserManagement.API\\Dto\\PaginationDto.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAoAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T03:39:21.105Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

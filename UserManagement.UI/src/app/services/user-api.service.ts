@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, filter } from 'rxjs';
 import { User } from '../models/user.interface';
 import { environment } from '../../environments/environment';
+import { Data } from '../models/data.interface';
+import { Pagination } from '../models/pagination.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +16,15 @@ export class UserApiService {
 
   public getUsers(
     searchItem: string = '',
-    sortOrder: string = 'desc'
-  ): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}`, {
-      params: { searchItem: searchItem, sortOrder: sortOrder },
+    sortOrder: string = 'desc',
+    pageNumber: number
+  ): Observable<Data> {
+    return this.http.get<Data>(`${this.baseUrl}`, {
+      params: {
+        searchItem: searchItem,
+        sortOrder: sortOrder,
+        pageNumber: pageNumber,
+      },
     });
   }
 
