@@ -40,6 +40,7 @@ try
     builder.Services.AddControllers().AddJsonOptions(options =>
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
     );
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
@@ -82,7 +83,7 @@ try
 
     builder.Services.AddAuthorization(options =>
     {
-        options.AddPolicy("Admin", p => p.RequireClaim("IsAdmin", "true"));
+        options.AddPolicy("Admin", policy => policy.RequireRole("Admin", "Moderator"));
     });
 
     builder.Services.AddAutoMapper(typeof(Program).Assembly);

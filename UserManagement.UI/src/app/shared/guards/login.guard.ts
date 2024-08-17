@@ -5,7 +5,7 @@ import { UserAuthService } from '../../services/user-auth.service';
 export const loginGuard: CanActivateFn = (route, state) => {
   const userAuthService: UserAuthService = inject(UserAuthService);
   const router: Router = inject(Router);
-  console.log(userAuthService.currentUserSig());
+
   if (userAuthService.currentUserSig() === null) return true;
   else {
     router.navigateByUrl('/users');

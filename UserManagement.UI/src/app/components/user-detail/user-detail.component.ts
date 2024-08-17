@@ -42,6 +42,14 @@ export class UserDetailComponent implements OnInit {
     private mapService: MapService
   ) {}
 
+  public canEdit() {
+    const admin = this.userAuthService.isAdmin();
+
+    const tokenId = this.userAuthService.getUserId().toString();
+
+    if (this.userId.toString() === tokenId || admin === 'admin') return true;
+    return false;
+  }
   get form() {
     return this.updateForm;
   }
@@ -59,7 +67,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   get username() {
-    return this.updateForm.get('username');
+    return this.updateForm.get('userName');
   }
 
   get email() {
@@ -71,11 +79,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   get phone() {
-    return this.updateForm.get('phone');
-  }
-
-  get admin() {
-    return this.updateForm.get('isAdmin');
+    return this.updateForm.get('phoneNumber');
   }
 
   get city() {
@@ -148,7 +152,7 @@ export class UserDetailComponent implements OnInit {
         lastName: [user.name.lastName],
       }),
 
-      username: [user.userName, [Validators.required, Validators.minLength(6)]],
+      userName: [user.userName, [Validators.required, Validators.minLength(6)]],
       password: [
         { value: user.password, disabled: true },
         [
@@ -163,7 +167,7 @@ export class UserDetailComponent implements OnInit {
         { value: user.email, disabled: true },
         [Validators.required, Validators.email],
       ],
-      phone: [{ value: user.phoneNumber, disabled: true }],
+      phoneNumber: [{ value: user.phoneNumber, disabled: true }],
       address: this.formBuilder.nonNullable.group({
         streetName: [{ value: user.address.streetName, disabled: true }],
         streetNumber: [{ value: user.address.streetNumber, disabled: true }],
@@ -183,7 +187,7 @@ export class UserDetailComponent implements OnInit {
     this.mapService.enableMap();
     this.updateForm.get('email')?.enable();
     this.updateForm.get('password')?.enable();
-    this.updateForm.get('phone')?.enable();
+    this.updateForm.get('phoneNumber')?.enable();
     this.updateForm.get('isAdmin')?.enable();
     this.updateForm.controls['address'].get('streetName')?.enable();
     this.updateForm.controls['address'].get('streetNumber')?.enable();
@@ -192,6 +196,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   public onUpdateUser(data: any) {
+    console.log(data);
     if (confirm('Are you sure to update this user?')) {
       setTimeout(() => {
         this.userApiService.updateUser(this.userId, data).subscribe({

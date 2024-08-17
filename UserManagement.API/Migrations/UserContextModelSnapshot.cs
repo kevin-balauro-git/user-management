@@ -110,6 +110,31 @@ namespace UserManagement.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("UserManagement.API.Entities.History", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("HttpVerb")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Histories");
+                });
+
             modelBuilder.Entity("UserManagement.API.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -267,6 +292,17 @@ namespace UserManagement.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UserManagement.API.Entities.History", b =>
+                {
+                    b.HasOne("UserManagement.API.Entities.User", "User")
+                        .WithMany("Histories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UserManagement.API.Entities.User", b =>
                 {
                     b.OwnsOne("UserManagement.API.Entities.Address", "Address", b1 =>
@@ -384,6 +420,8 @@ namespace UserManagement.API.Migrations
 
             modelBuilder.Entity("UserManagement.API.Entities.User", b =>
                 {
+                    b.Navigation("Histories");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

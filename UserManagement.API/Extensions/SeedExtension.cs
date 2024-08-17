@@ -17,7 +17,8 @@ namespace UserManagement.API.Extensions
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
                 await userContext.Database.MigrateAsync();
-                await SeedData.InitializeDb(userManager, roleManager);
+                
+                await SeedData.InitializeDb(userManager, roleManager, userContext);
 
             }
 

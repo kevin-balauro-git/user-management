@@ -46,8 +46,6 @@ namespace UserManagement.API.Repository
                 users = await _userManager.Users.ToListAsync();
             }
 
-
-
             var filteredUsers = users
                 .Where(u => !u.UserName!.Contains(userRoleDto.UserName))
                 .Where(u =>
@@ -57,10 +55,15 @@ namespace UserManagement.API.Repository
                  u.PhoneNumber!.ToLower().Contains(searchItem.ToLower()) ||
                  u.UserName!.ToLower().Contains(searchItem.ToLower()))
                 .ToList();
-            _logger.LogInformation("Total Count: {@count}", filteredUsers.Count());
+            
             pagination.totalCount = filteredUsers.Count();
 
-            var usersDto = filteredUsers.Skip(pagination.pageNumber * pagination.pageSize).Take(pagination.pageSize).Select(u => _mapper.Map<UserDto>(u)).ToList();
+            var usersDto = filteredUsers
+                .Skip(pagination.pageNumber * pagination.pageSize)
+                .Take(pagination.pageSize)
+                .Select(u => _mapper.Map<UserDto>(u))
+                .ToList();
+
             if (sortOrder.Equals("desc"))
                 return usersDto.OrderBy(u => u.Id).ToList();
             return usersDto.OrderByDescending(u => u.Id).ToList();

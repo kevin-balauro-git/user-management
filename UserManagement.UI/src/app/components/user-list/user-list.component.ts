@@ -19,7 +19,7 @@ import { Pagination } from '../../models/pagination.interface';
 export class UserListComponent implements OnInit, OnDestroy {
   private hasDeleted: boolean = false;
   private form: FormGroup = this.formbuilder.group({ searchItem: [''] });
-
+  private searchItem: string | undefined;
   private users: User[] | undefined;
   private pagination: Pagination | undefined;
   private usersSub$: Subscription | undefined;
@@ -33,6 +33,12 @@ export class UserListComponent implements OnInit, OnDestroy {
     private formbuilder: FormBuilder
   ) {}
 
+  get isAdmin() {
+    return this.userAuthService.isAdmin();
+  }
+  get numberOfUsers() {
+    return this.pagination?.totalCount;
+  }
   get searchForm() {
     return this.form;
   }
@@ -41,7 +47,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     return this.hasDeleted;
   }
 
-  get searchItem() {
+  get searchControl() {
     return this.form.controls['searchItem'];
   }
 
@@ -60,6 +66,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   public getUsers(searchItem: string, sortOrder: string, pageNumber: number) {
+    this.searchItem = searchItem;
     this.usersSub$ = this.userApiService
       .getUsers(searchItem, sortOrder, pageNumber)
       .subscribe({
@@ -71,6 +78,7 @@ export class UserListComponent implements OnInit, OnDestroy {
         error: (err) => {},
       });
   }
+
   ngOnInit(): void {
     this.getUsers('', 'desc', 0);
   }
@@ -108,7 +116,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   public sort(sortName: string): void {
     this.isDesc = !this.isDesc;
     this.usersSub$?.unsubscribe();
-    this.getUsers('', this.isDesc === true ? 'desc' : 'asc', 0);
+    this.getUsers(this.searchItem!, this.isDesc === true ? 'desc' : 'asc', 0);
   }
 
   public sortImage() {
@@ -118,19 +126,19 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   public page(n: number) {
     this.currentNumber = n;
-    this.getUsers('', 'desc', this.currentNumber);
+    this.getUsers(this.searchItem!, 'desc', this.currentNumber);
   }
 
   public previous() {
     if (this.currentNumber < 0) return;
     this.currentNumber = this.currentNumber - 1;
-    this.getUsers('', 'desc', this.currentNumber);
+    this.getUsers(this.searchItem!, 'desc', this.currentNumber);
   }
 
   public next() {
     if (this.currentNumber < this.pageNumber.length - 1) {
       this.currentNumber = this.currentNumber + 1;
-      this.getUsers('', 'desc', this.currentNumber);
+      this.getUsers(this.searchItem!, 'desc', this.currentNumber);
     }
   }
 }

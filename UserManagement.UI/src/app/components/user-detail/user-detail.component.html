@@ -108,7 +108,7 @@
                   type="text"
                   placeholder="Enter your phone:"
                   [value]="phone?.value"
-                  formControlName="phone"
+                  formControlName="phoneNumber"
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@
               </div>
             </div>
             <div>
-              <div class="d-inline">
+              <div class="d-inline" *ngIf="canEdit()">
                 <button
                   *ngIf="isDisabled; else update"
                   class="btn btn-primary mx-1"

@@ -51,7 +51,7 @@ namespace UserManagement.API.Controllers
 
             return Ok(new ClaimUserDto
             {
-                Id = user.Id,
+                NameId = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 Token = await token

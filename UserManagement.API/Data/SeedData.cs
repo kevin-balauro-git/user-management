@@ -6,12 +6,12 @@ namespace UserManagement.API.Data
 {
     public class SeedData
     {
-        public static async Task InitializeDb(UserManager<User> userManager, RoleManager<Role> roleManager)
-{
-    if (userManager.Users.Any()) { return; }
-    
-    var users = new User[]
+        public static async Task InitializeDb(UserManager<User> userManager, RoleManager<Role> roleManager, UserContext userContext)
         {
+            if (userManager.Users.Any()) { return; }
+
+            var users = new User[]
+                {
             new User{
 
                 Name = {FirstName="Antonio", LastName="Luna"},
@@ -31,7 +31,7 @@ namespace UserManagement.API.Data
                         Longitude = "120.4934"
                     }
                 },
-                
+
             },
             new User{
 
@@ -52,7 +52,7 @@ namespace UserManagement.API.Data
                         Longitude = "124.0674"
                     }
                 },
-               
+
             },
             new User{
 
@@ -73,7 +73,7 @@ namespace UserManagement.API.Data
                         Longitude = "124.4198"
                     }
                 },
-               
+
             },
             new User{
 
@@ -94,8 +94,8 @@ namespace UserManagement.API.Data
                         Longitude = "124.4198"
                     }
                 },
-               
-            }, 
+
+            },
             new User{
 
                 Name = {FirstName="Lakan", LastName="Kudarat"},
@@ -115,64 +115,64 @@ namespace UserManagement.API.Data
                         Longitude = "124.4198"
                     }
                 },
-                
+
             }
-            
-        };
-    var roles = new List<Role>
+
+                };
+            var roles = new List<Role>
     {
         new Role{ Name="Employee"},
         new Role{ Name="Admin"},
         new Role{ Name="Moderator"}
     };
 
-    var admins = new User[] { 
-        
-    new User() {UserName = "admin",Email = "admin@email.com", Password = "Pa$$w0rd" },
-   
-    new User() {
+            var admins = new User[] {
 
-        Name = { FirstName = "Juan", LastName = "Luna" },
-        UserName = "juanluna",
-        Email = "juanluna@email.com",
-        Password = "juanLun4uno*",
+            new User() {UserName = "admin",Email = "admin@email.com", Password = "Pa$$w0rd" },
 
-        Address =
-                {
-                    City ="Badoc",
-                    StreetName = "Bado",
-                    StreetNumber = "77",
-                    ZipCode="2904",
-                    GeoLocation =
-                    {
-                        Latitude ="17.9085",
-                        Longitude = "120.4934"
-                    }
-                },
-        PhoneNumber = "09583452456",
+            new User() {
+
+                Name = { FirstName = "Juan", LastName = "Luna" },
+                UserName = "juanluna",
+                Email = "juanluna@email.com",
+                Password = "juanLun4uno*",
+
+                Address =
+                        {
+                            City ="Badoc",
+                            StreetName = "Bado",
+                            StreetNumber = "77",
+                            ZipCode="2904",
+                            GeoLocation =
+                            {
+                                Latitude ="17.9085",
+                                Longitude = "120.4934"
+                            }
+                        },
+                PhoneNumber = "09583452456",
+                }
+            };
+
+            foreach (Role role in roles)
+            {
+                await roleManager.CreateAsync(role);
+            }
+
+            foreach (User admin in admins)
+            {
+                await userManager.CreateAsync(admin, admin.Password);
+                await userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });
+                await userContext.Histories.AddAsync(new History() {UserId =1, HttpVerb = "CREATE", });
+            }
+
+            foreach (User user in users)
+            {
+                await userManager.CreateAsync(user, user.Password);
+                await userManager.AddToRoleAsync(user, "Employee");
+                await userContext.Histories.AddAsync(new History() { UserId = 1, HttpVerb = "CREATE", });         
+            }
+
+            await userContext.SaveChangesAsync();
         }
-    };
-    
-    
-
-    foreach (Role role in roles)
-    {
-        await roleManager.CreateAsync(role);
-    }
-
-    foreach (User user in users)
-    {  
-        await userManager.CreateAsync(user, user.Password);
-        await userManager.AddToRoleAsync(user, "Employee");
-    }
-
-    foreach (User admin in admins)
-    {
-        await userManager.CreateAsync(admin, admin.Password);
-        await userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });
-    }
-
-    
-}
     }
 }

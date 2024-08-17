@@ -12,7 +12,7 @@ using UserManagement.API.Entities;
 namespace UserManagement.API.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20240717143510_InitialMigration")]
+    [Migration("20240808140844_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -111,6 +111,31 @@ namespace UserManagement.API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("UserManagement.API.Entities.History", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("HttpVerb")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Histories");
                 });
 
             modelBuilder.Entity("UserManagement.API.Entities.Role", b =>
@@ -270,6 +295,17 @@ namespace UserManagement.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UserManagement.API.Entities.History", b =>
+                {
+                    b.HasOne("UserManagement.API.Entities.User", "User")
+                        .WithMany("Histories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("UserManagement.API.Entities.User", b =>
                 {
                     b.OwnsOne("UserManagement.API.Entities.Address", "Address", b1 =>
@@ -387,6 +423,8 @@ namespace UserManagement.API.Migrations
 
             modelBuilder.Entity("UserManagement.API.Entities.User", b =>
                 {
+                    b.Navigation("Histories");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

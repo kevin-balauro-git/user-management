@@ -32,12 +32,31 @@ export class UserAuthService {
   public getUserRole(): UserRole | null {
     const user = this.userToken();
     const token = user.token;
-
     const decodeToken = jwtDecode<UserRole>(token);
     return decodeToken;
   }
 
   public userToken() {
     return JSON.parse(localStorage.getItem('user')!);
+  }
+
+  public getUserId(): number {
+    const user = this.userToken();
+    const token = user.token;
+    const decodeToken = jwtDecode<UserRole>(token);
+    return decodeToken.nameid;
+  }
+
+  public isAdmin() {
+    let role: string[] | string | undefined;
+    if (typeof this.getUserRole()!.role === 'object')
+      role = this.getUserRole()!
+        .role.filter((r: string) => r.toLowerCase() === 'admin')
+        .toString();
+
+    if (typeof this.getUserRole()!.role === 'string')
+      role = this.getUserRole()!.role;
+
+    return role?.toString().toLowerCase();
   }
 }
